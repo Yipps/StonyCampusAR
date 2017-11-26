@@ -1,23 +1,22 @@
 fileFormatVersion: 2
-guid: 991d1b8ed5d4ede4c963e010ede470fe
-timeCreated: 1511675358
+guid: a69e3c10844988d40bf36d7799ade393
+timeCreated: 1511677173
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Staller_Building:Solid1
     400000: //RootNode
-    400002: Staller_Building:Solid1
-    2300000: Staller_Building:Solid1
-    3300000: Staller_Building:Solid1
-    4300000: Staller_Building:Solid1
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: MapMesh
+    9500000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Staller_Building_Solid1Mat
-    second: {fileID: 2100000, guid: ed62676e88dad1b4e932cdaeed0c4d9b, type: 2}
+      name: lambert1
+    second: {fileID: 2100000, guid: f35c22652836b554fbce6393ce83d025, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -47,7 +46,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.006464472
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -89,7 +88,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
