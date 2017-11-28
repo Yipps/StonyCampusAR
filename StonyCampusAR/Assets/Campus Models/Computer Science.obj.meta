@@ -19,7 +19,7 @@ ModelImporter:
       name: Old_Computer_Science_Solid1Mat
     second: {fileID: 2100000, guid: d0ef585b3eef43f43bdebf460b38d85f, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

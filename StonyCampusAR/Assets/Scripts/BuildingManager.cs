@@ -4,15 +4,18 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class BuildingManager : MonoBehaviour {
+    
+    public GameObject[] buildingGameObjects;
 
-    GameObject[] buildings;
-
-    public GameObject originBuilding;
-    public GameObject destinationBuilding;
+    List <Buildings> selectedBuildings;
 
     private void Awake()
     {
-       
+        selectedBuildings = new List<Buildings>();
+        for (int i = 0; i < buildingGameObjects.Length; i++)
+        {
+            buildingGameObjects[i].AddComponent<Buildings>();
+        }
     }
 
     private void OnEnable()
@@ -25,9 +28,11 @@ public class BuildingManager : MonoBehaviour {
 
     }
 
-    void BuildingSelected(GameObject building)
+    void BuildingSelected(GameObject buildingObject)
     {
-        originBuilding = building;
+        Buildings building = buildingObject.GetComponentInParent<Buildings>();
+        selectedBuildings.Add(building);
+        building.Selected();
     }
 
 

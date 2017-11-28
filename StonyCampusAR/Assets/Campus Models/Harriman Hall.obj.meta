@@ -19,7 +19,7 @@ ModelImporter:
       name: Harriman_Hall1Mat
     second: {fileID: 2100000, guid: 274be56d37b415c49b69648d3379c66a, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

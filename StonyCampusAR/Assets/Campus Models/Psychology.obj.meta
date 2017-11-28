@@ -19,7 +19,7 @@ ModelImporter:
       name: Psychology_Solid1Mat
     second: {fileID: 2100000, guid: 2236c2cd7cc9d054db9261b0ea5b9c30, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

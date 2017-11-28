@@ -19,7 +19,7 @@ ModelImporter:
       name: Simons_Center_Solid1Mat
     second: {fileID: 2100000, guid: 54da1807d53304d4fb57b48411f3b115, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

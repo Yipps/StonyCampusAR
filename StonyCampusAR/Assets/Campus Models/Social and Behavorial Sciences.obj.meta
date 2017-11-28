@@ -19,7 +19,7 @@ ModelImporter:
       name: Social_and_Behavorial_Sciences_Building_Solid1Mat
     second: {fileID: 2100000, guid: 6666693115ac2ff488846d83f2f871e3, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

@@ -19,7 +19,7 @@ ModelImporter:
       name: AdminMat
     second: {fileID: 2100000, guid: 78ba7a2895f314e4da4db2a89b2a7cff, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

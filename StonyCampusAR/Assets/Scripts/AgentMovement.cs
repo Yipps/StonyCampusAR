@@ -12,14 +12,13 @@ public class AgentMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         cam = Camera.main;
-        nav = GetComponent<NavMeshAgent>();
+        //nav = GetComponent<NavMeshAgent>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            Debug.Log("Mouse down");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Debug.Log(ray.ToString());
             RaycastHit hit;
@@ -27,15 +26,14 @@ public class AgentMovement : MonoBehaviour {
 
             if (hit.transform)
             {
-                Debug.Log("TEst");
                 EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
             }
 
-            /*if (Physics.Raycast(ray,out hit))
+            if (Physics.Raycast(ray,out hit))
             {
                 Debug.Log("Ray cast");
                 nav.SetDestination(hit.point);
-            }*/
+            }
         }
 	}
 }

@@ -19,7 +19,7 @@ ModelImporter:
       name: ChemistryMat
     second: {fileID: 2100000, guid: 437faac956cbc5b40b5c36ef30a55f6e, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

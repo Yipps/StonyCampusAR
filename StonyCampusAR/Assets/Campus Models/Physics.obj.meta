@@ -19,7 +19,7 @@ ModelImporter:
       name: Physics_Solid1Mat
     second: {fileID: 2100000, guid: 61be6245271275a4b89ca6e7804c9922, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

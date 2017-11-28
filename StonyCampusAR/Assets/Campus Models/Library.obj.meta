@@ -19,7 +19,7 @@ ModelImporter:
       name: Libary1Mat
     second: {fileID: 2100000, guid: 813fba384da6d154bba766f6e747f2ae, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

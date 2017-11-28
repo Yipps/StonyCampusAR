@@ -19,7 +19,7 @@ ModelImporter:
       name: Staller_Building_Solid1Mat
     second: {fileID: 2100000, guid: ed62676e88dad1b4e932cdaeed0c4d9b, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

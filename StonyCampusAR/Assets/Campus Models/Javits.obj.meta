@@ -19,7 +19,7 @@ ModelImporter:
       name: JavitsMat
     second: {fileID: 2100000, guid: 7fa61bb3146f9514d920e0b744284243, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

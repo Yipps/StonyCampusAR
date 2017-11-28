@@ -19,7 +19,7 @@ ModelImporter:
       name: transform1Mat
     second: {fileID: 2100000, guid: 4063c2e32ca1a0c4cb992eac1ed49a97, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

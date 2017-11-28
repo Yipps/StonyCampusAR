@@ -19,7 +19,7 @@ ModelImporter:
       name: Life_SciencesMat
     second: {fileID: 2100000, guid: e9abd7b3661069f4daded9d0adf1f3e0, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0

@@ -19,7 +19,7 @@ ModelImporter:
       name: Math_Solid1Mat
     second: {fileID: 2100000, guid: c8888c79a5de7534d9d07fcf0f646a66, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0
