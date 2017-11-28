@@ -1,16 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BuildingManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    GameObject[] buildings;
+
+    public GameObject originBuilding;
+    public GameObject destinationBuilding;
+
+    private void Awake()
+    {
+       
+    }
+
+    private void OnEnable()
+    {
+        EventManager.StartListening("BuildingSelected", BuildingSelected);
+    }
+
+    private void OnDisable()
+    {
+
+    }
+
+    void BuildingSelected(GameObject building)
+    {
+        originBuilding = building;
+    }
+
+
+
 }
