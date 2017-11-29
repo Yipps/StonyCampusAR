@@ -78,17 +78,21 @@ public class NavigationControl : MonoBehaviour {
 
     private void ListenToClicks()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Debug.Log(ray.ToString());
-            RaycastHit hit;
-            Physics.Raycast(ray, out hit);
 
-            if (hit.transform && hit.transform.tag != "Road")
+        for (int i = 0; i < Input.touchCount; ++i)
+            if (Input.GetTouch(i).phase.Equals(TouchPhase.Began))
             {
-                EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
+                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
+                Debug.Log(ray.ToString());
+                RaycastHit hit;
+                Physics.Raycast(ray, out hit);
+
+                if (hit.transform && hit.transform.tag != "Road")
+                {
+                    EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
+                }
             }
-        }
+
+
     }
 }
