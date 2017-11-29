@@ -65,11 +65,18 @@ public class NavigationControl : MonoBehaviour {
         {
             renderedPath = this.gameObject.AddComponent<LineRenderer>();
             renderedPath.material = new Material(Shader.Find("Sprites/Default")) { color = Color.yellow };
+            renderedPath.positionCount = 0;
         }
         nav.isStopped = true;
     }
 
     private void Update()
+    {
+        ListenToClicks();
+    }
+    
+
+    private void ListenToClicks()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -78,11 +85,10 @@ public class NavigationControl : MonoBehaviour {
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
 
-            if (hit.transform)
+            if (hit.transform && hit.transform.tag != "Road")
             {
                 EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
             }
         }
     }
-    
 }
