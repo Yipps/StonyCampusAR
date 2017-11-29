@@ -19,7 +19,7 @@ ModelImporter:
       name: Heavy_EngineeringMat
     second: {fileID: 2100000, guid: 341ef5868a2e4b84c93bbc60754e21cb, type: 2}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 0

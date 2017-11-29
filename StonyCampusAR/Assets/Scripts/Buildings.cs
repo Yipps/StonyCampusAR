@@ -22,15 +22,11 @@ public class Buildings:MonoBehaviour
         isSelected = !isSelected;
         if (isSelected)
         {
-            Color color = renderer.material.color;
-            color.a = 1f;
-            renderer.material.color = new Color(.13f,.75f,.62f,.8f);
+            renderer.material.color = Color.green;
         }
         else
         {
-            Color color = renderer.material.color;
-            color.a = 0.68f;
-            renderer.material.color = new Color(.16f,.50f,.70f,.68f);
+            renderer.material.color = Color.white;
         }
         return isSelected;
 
