@@ -7,7 +7,7 @@ public class Buildings:MonoBehaviour
 {
 
     public bool isSelected;
-    MeshRenderer renderer;
+    private MeshRenderer renderer;
 
     private void Start()
     {
@@ -16,7 +16,7 @@ public class Buildings:MonoBehaviour
 
     }
 
-    public void Selected()
+    public bool Selected()
     {
 
         isSelected = !isSelected;
@@ -28,6 +28,7 @@ public class Buildings:MonoBehaviour
         {
             renderer.material.color = Color.white;
         }
+        return isSelected;
 
     }
 

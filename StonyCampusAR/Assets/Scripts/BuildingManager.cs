@@ -4,18 +4,32 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class BuildingManager : MonoBehaviour {
-    
+
+    public static BuildingManager instance = null;
+
     public GameObject[] buildingGameObjects;
 
-    List <Buildings> selectedBuildings;
+    public List <Buildings> selectedBuildings;
 
     private void Awake()
     {
-        selectedBuildings = new List<Buildings>();
-        for (int i = 0; i < buildingGameObjects.Length; i++)
-        {
-            buildingGameObjects[i].AddComponent<Buildings>();
-        }
+
+        //Check if instance already exists
+        if (instance == null)
+
+            //if not, set instance to this
+            instance = this;
+
+        //If instance already exists and it's not this:
+        else if (instance != this)
+
+            //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
+            Destroy(gameObject);
+
+        //Sets this to not be destroyed when reloading scene
+        DontDestroyOnLoad(gameObject);
+
+        Init();
     }
 
     private void OnEnable()
@@ -31,8 +45,26 @@ public class BuildingManager : MonoBehaviour {
     void BuildingSelected(GameObject buildingObject)
     {
         Buildings building = buildingObject.GetComponentInParent<Buildings>();
+
+        if (building.Selected()) { 
         selectedBuildings.Add(building);
-        building.Selected();
+        }
+        else
+        {
+            selectedBuildings.Remove(building);
+        }
+
+        if (selectedBuildings.Count > 1)
+            NavigationControl.instance.ComputePath(selectedBuildings);
+    }
+
+    void Init()
+    {
+        selectedBuildings = new List<Buildings>();
+        for (int i = 0; i < buildingGameObjects.Length; i++)
+        {
+            buildingGameObjects[i].AddComponent<Buildings>();
+        }
     }
 
 

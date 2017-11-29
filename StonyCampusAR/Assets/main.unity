@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -204,13 +204,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 33549368}
-  m_LocalRotation: {x: 0.40425733, y: -0, z: -0, w: 0.9146454}
-  m_LocalPosition: {x: 0, y: 29.49, z: -32.7}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -2.6, y: 50, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 47.689003, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &33549374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,11 +219,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 33549368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 397df41d5b707e8408482de31b0f53dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c2ef071870d0cd4e869b6ec1a54391c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 33549372}
   nav: {fileID: 1578493043}
+  waypoints: []
 --- !u!1 &53311053 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: 0fd5140c8997671439cbd77eb4138337, type: 3}
@@ -1371,7 +1371,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: a69e3c10844988d40bf36d7799ade393, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: a69e3c10844988d40bf36d7799ade393, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1435,6 +1435,7 @@ MonoBehaviour:
   - {fileID: 966708025}
   - {fileID: 868738177}
   - {fileID: 940406500}
+  selectedBuildings: []
 --- !u!1 &1985112888 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: ebe3dd9490e1da943b7a2a9d4925a658, type: 3}
