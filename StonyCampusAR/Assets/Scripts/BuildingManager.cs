@@ -46,7 +46,8 @@ public class BuildingManager : MonoBehaviour {
     {
         Buildings building = buildingObject.GetComponentInParent<Buildings>();
 
-        if (building.Selected()) { 
+        if (building.Selected())
+        { 
         selectedBuildings.Add(building);
         }
         else
@@ -54,8 +55,7 @@ public class BuildingManager : MonoBehaviour {
             selectedBuildings.Remove(building);
         }
 
-        if (selectedBuildings.Count > 1)
-            NavigationControl.instance.ComputePath(selectedBuildings);
+        NavigationControl.instance.ComputePath(selectedBuildings);
     }
 
     void Init()
