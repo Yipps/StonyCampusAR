@@ -7,7 +7,7 @@ public class NavigationControl : MonoBehaviour {
 
     public static NavigationControl instance = null;
 
-    public NavMeshAgent nav;
+    
     public List<Vector3> waypoints;
 
     private LineRenderer renderedPath;
@@ -67,7 +67,6 @@ public class NavigationControl : MonoBehaviour {
             renderedPath.material = new Material(Shader.Find("Sprites/Default")) { color = Color.yellow };
             renderedPath.positionCount = 0;
         }
-        nav.isStopped = true;
     }
 
     private void Update()
@@ -79,10 +78,10 @@ public class NavigationControl : MonoBehaviour {
     private void ListenToClicks()
     {
 
-        for (int i = 0; i < Input.touchCount; ++i)
-            if (Input.GetTouch(i).phase.Equals(TouchPhase.Began))
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(i).position);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 Debug.Log(ray.ToString());
                 RaycastHit hit;
                 Physics.Raycast(ray, out hit);

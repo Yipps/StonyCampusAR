@@ -44,16 +44,12 @@ MonoBehaviour:
       ContainsMagnet: 0
   databaseLoad:
     dataSetsToLoad:
-    - VuforiaMars_Images
-    - VuforiaMars_Object_OT
-    - VuforiaMars_VuMark
+    - CampusAR
     dataSetsToActivate:
-    - VuforiaMars_Images
-    - VuforiaMars_Object_OT
-    - VuforiaMars_VuMark
+    - CampusAR
   videoBackground:
     clippingMode: 0
-    numDivisions: 2
+    numDivisions: 4
     videoBackgroundShader: {fileID: 15311, guid: 0000000000000000f000000000000000,
       type: 0}
     matteShader: {fileID: 15310, guid: 0000000000000000f000000000000000, type: 0}
@@ -74,5 +70,5 @@ MonoBehaviour:
   webcam:
     deviceNameSetInEditor: 
     flipHorizontally: 0
-    turnOffWebCam: 1
+    turnOffWebCam: 0
     renderTextureLayer: 30
