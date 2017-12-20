@@ -8,19 +8,19 @@ public class GUIControls : MonoBehaviour {
     public GameObject MenuPanel;
 
 
-    void OpenMenu()
+    public void OpenMenu()
     {
         MenuButton.SetActive(false);
         MenuPanel.SetActive(true);
     }
 
-    void CloseMenu()
+    public void CloseMenu()
     {
         MenuButton.SetActive(true);
         MenuPanel.SetActive(false);
     }
 
-    void FilterOrganizations(string org)
+    public void FilterOrganizations(string org)
     {
         BuildingManager.instance.HighlightOrganization(org);
     }

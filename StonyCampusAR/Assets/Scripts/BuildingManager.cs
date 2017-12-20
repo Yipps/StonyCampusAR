@@ -123,7 +123,10 @@ public class BuildingManager : MonoBehaviour {
             foreach(Facilities y in x.facilities)
             {
                 if (org == y.organization)
+                {
                     x.Selected();
+                    break;
+                }
             }
         }
             
