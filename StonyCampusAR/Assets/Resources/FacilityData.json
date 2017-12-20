@@ -1,0 +1,92 @@
+[
+    {
+        "name": "Innovation Lab",
+        "building": "Harriman Hall",
+        "organization": "iCreate"
+    },
+    {
+        "name": "Green House",
+        "building": "Harriman Hall",
+        "organization": "iCreate"
+    },
+    {
+        "name": "Design Studio",
+        "building": "Engineering",
+        "organization": "iCreate"
+    },
+    {
+        "name": "Chemistry 432 SINC Site",
+        "building": "Chemistry",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Chemistry 434 SINC Site",
+        "building": "Chemistry",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Computer Science SINC Site",
+        "building": "Computer Science",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "ESS SINC Site",
+        "building": "ESS",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Engineering SINC Site",
+        "building": "Engineering",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Fine Arts Hybrid SINC Site",
+        "building": "Staller",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Fine Arts eMedia SINC Site",
+        "building": "Staller",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Harriman Hall SINC Site",
+        "building": "Harriman",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Humanities SINC Site",
+        "building": "Humanities",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Life Sciences SINC Site",
+        "building": "Life Sciences",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Math SINC Site",
+        "building": "Math",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Melville Library SINC Site",
+        "building": "Library",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "North Reading Room",
+        "building": "Library",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Physics SINC Site",
+        "building": "Physics",
+        "organization": "SINC Site"
+    },
+    {
+        "name": "Social and Behavioral Sciences SINC Site",
+        "building": "Social and Behavioral Sciences",
+        "organization": "SINC Site"
+    }
+]

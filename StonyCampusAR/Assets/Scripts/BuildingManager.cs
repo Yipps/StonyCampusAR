@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +10,14 @@ public class BuildingManager : MonoBehaviour {
 
     public GameObject[] buildingGameObjects;
 
-    public List <Buildings> selectedBuildings;
+    private List<Buildings> buildings;
+
+    public List<Buildings> selectedBuildings;
+
+    public Facilities[] facilities;
+
+    public List<string> departments;
+    public List<string> organizations;
 
     private void Awake()
     {
@@ -60,13 +68,65 @@ public class BuildingManager : MonoBehaviour {
 
     void Init()
     {
+        organizations = new List<string>();
+        departments = new List<string>();
+        buildings = new List<Buildings>();
         selectedBuildings = new List<Buildings>();
         for (int i = 0; i < buildingGameObjects.Length; i++)
         {
-            buildingGameObjects[i].AddComponent<Buildings>();
+            buildings.Add(buildingGameObjects[i].AddComponent<Buildings>());
+        }
+
+        
+
+        LoadBuildingData();
+    }
+
+    private void LoadBuildingData()
+    {
+        TextAsset buildingJson = Resources.Load<TextAsset>("CampusData");
+        TextAsset facilityJson = Resources.Load<TextAsset>("FacilityData");
+        BuildingData[] buildingData = JsonConvert.DeserializeObject<BuildingData[]>(buildingJson.text);
+        facilities = JsonConvert.DeserializeObject<Facilities[]>(facilityJson.text);
+
+        Debug.Log(facilities.Length);
+        ///Inefficent
+        foreach (BuildingData i in buildingData)
+        {
+            
+            GameObject building = GameObject.Find(i.buildingName);
+            building.GetComponent<Buildings>().buildingName = i.buildingName;
+            //building.GetComponent<Buildings>().facilities.Add(new Facilities("etasdaw"));
+        }
+        foreach (Facilities i in facilities)
+        {
+            if (!organizations.Contains(i.organization))
+                organizations.Add(i.organization);
+
+            foreach (Buildings x in buildings)
+            {
+                if (x.buildingName == i.building)
+                {
+                    Debug.Log(x.buildingName + " : " + i.name);
+                    List<Facilities> test = x.facilities;
+                    test.Add(i);
+                }
+
+            }
         }
     }
 
-
+    public void HighlightOrganization(string org)
+    {
+        foreach (Buildings x in buildings)
+        {
+            foreach(Facilities y in x.facilities)
+            {
+                if (org == y.organization)
+                    x.Selected();
+            }
+        }
+            
+    }
 
 }
