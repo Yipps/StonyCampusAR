@@ -1,5 +1,5 @@
 ﻿[System.Serializable]
-public class Facilities
+public class Facility
 {
     public string name;
     public string building;
@@ -7,23 +7,23 @@ public class Facilities
     public string description;
     public string organization;
 
-    public Facilities()
+    public Facility()
     {
 
     }
 
-    public Facilities(string name)
+    public Facility(string name)
     {
         this.name = name;
     }
 
-    public Facilities(string name, string department)
+    public Facility(string name, string department)
     {
         this.name = name;
         this.department = department;
     }
 
-    public Facilities(string name, string department, string organization)
+    public Facility(string name, string department, string organization)
     {
         this.name = name;
         this.department = department;

@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Buildings:MonoBehaviour
+public class Building:MonoBehaviour
 {
     public string buildingName;
     public string description;
     public bool isSelected;
-    public List<Facilities> facilities;
+    public List<Facility> facilities;
 
     private MeshRenderer renderer;
 
@@ -17,7 +17,7 @@ public class Buildings:MonoBehaviour
     {
         isSelected = false;
         renderer = this.GetComponentInChildren<MeshRenderer>();
-        facilities = new List<Facilities>();
+        facilities = new List<Facility>();
     }
 
     public bool Selected()

@@ -10,14 +10,14 @@ public class BuildingManager : MonoBehaviour {
 
     public GameObject[] buildingGameObjects;
 
-    private List<Buildings> buildings;
+    private Dictionary<string, Building> buildings;
 
-    public List<Buildings> selectedBuildings;
+    public List<Building> selectedBuildings;
 
-    public Facilities[] facilities;
+    public Facility[] facilities;
 
-    public List<string> departments;
-    public List<string> organizations;
+    private List<string> departments;
+    private List<string> organizations;
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class BuildingManager : MonoBehaviour {
 
     void BuildingSelected(GameObject buildingObject)
     {
-        Buildings building = buildingObject.GetComponentInParent<Buildings>();
+        Building building = buildingObject.GetComponentInParent<Building>();
 
         if (building.Selected())
         { 
@@ -70,66 +70,90 @@ public class BuildingManager : MonoBehaviour {
     {
         organizations = new List<string>();
         departments = new List<string>();
-        buildings = new List<Buildings>();
-        selectedBuildings = new List<Buildings>();
-        for (int i = 0; i < buildingGameObjects.Length; i++)
+        buildings = new Dictionary<string, Building>();
+        selectedBuildings = new List<Building>();
+
+        foreach (GameObject i in buildingGameObjects)
         {
-            buildings.Add(buildingGameObjects[i].AddComponent<Buildings>());
+            Building building = i.AddComponent<Building>();
+            buildings.Add(building.name, building);
         }
 
-        
-
         LoadBuildingData();
+
+        LoadFacilityData();
     }
 
     private void LoadBuildingData()
     {
         TextAsset buildingJson = Resources.Load<TextAsset>("CampusData");
-        TextAsset facilityJson = Resources.Load<TextAsset>("FacilityData");
+        
         BuildingData[] buildingData = JsonConvert.DeserializeObject<BuildingData[]>(buildingJson.text);
-        facilities = JsonConvert.DeserializeObject<Facilities[]>(facilityJson.text);
 
-        Debug.Log(facilities.Length);
-        ///Inefficent
+        Building building = null;
         foreach (BuildingData i in buildingData)
         {
-            
-            GameObject building = GameObject.Find(i.buildingName);
-            building.GetComponent<Buildings>().buildingName = i.buildingName;
-            //building.GetComponent<Buildings>().facilities.Add(new Facilities("etasdaw"));
+            if(buildings.TryGetValue(i.buildingName, out building))
+            {
+                building.name = i.buildingName;
+            }
+            else
+            {
+                Debug.Log("Could not find building " + i.buildingName + " while loading building data");
+            }
+
         }
-        foreach (Facilities i in facilities)
+    }
+
+    private void LoadFacilityData()
+    {
+        TextAsset facilityJson = Resources.Load<TextAsset>("FacilityData");
+        facilities = JsonConvert.DeserializeObject<Facility[]>(facilityJson.text);
+
+        Building building;
+
+        foreach(Facility i in facilities)
         {
             if (!organizations.Contains(i.organization))
                 organizations.Add(i.organization);
 
-            foreach (Buildings x in buildings)
+            if(buildings.TryGetValue(i.building,out building)){
+                building.facilities.Add(i);
+            }
+            else
             {
-                if (x.buildingName == i.building)
-                {
-                    Debug.Log(x.buildingName + " : " + i.name);
-                    List<Facilities> test = x.facilities;
-                    test.Add(i);
-                }
-
+                Debug.Log("Could not find building " + i.building + " to add facility " + i.name + " while adding facility data");
             }
         }
     }
 
     public void HighlightOrganization(string org)
     {
-        foreach (Buildings x in buildings)
+        Building[] selected = FilterBuildings(org);
+        foreach(Building i in selected)
         {
-            foreach(Facilities y in x.facilities)
+            i.Selected();
+        }
+    }
+
+    public Building[] FilterBuildings(string org)
+    {
+        List<Building> filteredBuildings = new List<Building>();
+
+        Building building = null;
+
+        foreach (Facility i in facilities)
+        {
+            if(i.organization == org)
             {
-                if (org == y.organization)
+                if (buildings.TryGetValue(i.building, out building))
                 {
-                    x.Selected();
-                    break;
+                    filteredBuildings.Add(building);
                 }
             }
         }
-            
+
+        return filteredBuildings.ToArray();
     }
 
 }

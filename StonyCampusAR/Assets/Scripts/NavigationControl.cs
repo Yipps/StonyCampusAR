@@ -22,7 +22,7 @@ public class NavigationControl : MonoBehaviour {
         Init();
     }
 	
-    public void ComputePath(List<Buildings> selectedBuildings)
+    public void ComputePath(List<Building> selectedBuildings)
     {
         if (selectedBuildings.Count < 1)
         {
