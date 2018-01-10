@@ -33,6 +33,11 @@ public class Building:MonoBehaviour
         }
         return isSelected;
     }
+
+    public void ShowFacility(GameObject icon)
+    {
+        Instantiate(icon, this.transform.position + new Vector3(0,10,0), Quaternion.identity);
+    }
 }
 
 

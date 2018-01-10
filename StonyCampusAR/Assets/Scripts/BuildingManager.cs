@@ -19,6 +19,8 @@ public class BuildingManager : MonoBehaviour {
     private List<string> departments;
     private List<string> organizations;
 
+    public GameObject[] icons;
+
     private void Awake()
     {
 
@@ -129,31 +131,50 @@ public class BuildingManager : MonoBehaviour {
 
     public void HighlightOrganization(string org)
     {
-        Building[] selected = FilterBuildings(org);
+        GameObject orgIcon = FindIcon(org);
+        Building[] selected = FilterBuildingsByOrganization(org);
+        Debug.Log(selected.Length);
+        Vector3 yoffset = new Vector3(0, 10, 0);
+
         foreach(Building i in selected)
         {
-            i.Selected();
+            Instantiate(orgIcon, i.transform.position + yoffset, orgIcon.transform.rotation);
         }
     }
 
-    public Building[] FilterBuildings(string org)
+    public Building[] FilterBuildingsByOrganization(string org)
     {
         List<Building> filteredBuildings = new List<Building>();
 
         Building building = null;
 
+        
         foreach (Facility i in facilities)
         {
+            //Check facilities where org name are equal
             if(i.organization == org)
             {
+                //check if the facility building exists
                 if (buildings.TryGetValue(i.building, out building))
                 {
-                    filteredBuildings.Add(building);
+                    //check if the building is already in the list
+                    if (!filteredBuildings.Contains(building))
+                        filteredBuildings.Add(building);
                 }
             }
         }
 
         return filteredBuildings.ToArray();
+    }
+
+    private GameObject FindIcon(string name)
+    {
+        foreach (GameObject i in icons)
+            if (i.name == name)
+                return i;
+
+        Debug.Log("Icon " + name + " not found");
+        return null;
     }
 
 }
