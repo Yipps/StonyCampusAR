@@ -133,15 +133,15 @@ public class BuildingManager : MonoBehaviour {
     {
         GameObject orgIcon = FindIcon(org);
         Building[] selected = FilterBuildingsByOrganization(org);
-        Debug.Log(selected.Length);
-        Vector3 yoffset = new Vector3(0, 10, 0);
 
         foreach(Building i in selected)
         {
-            Instantiate(orgIcon, i.transform.position + yoffset, orgIcon.transform.rotation);
+            i.ToggleIcon(orgIcon);
         }
     }
 
+
+    //Helper method, returns an array of buildings containing a facilities of a certain organization
     public Building[] FilterBuildingsByOrganization(string org)
     {
         List<Building> filteredBuildings = new List<Building>();

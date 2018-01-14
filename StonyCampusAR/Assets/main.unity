@@ -3000,6 +3000,7 @@ MonoBehaviour:
   facilities: []
   icons:
   - {fileID: 1120295967464796, guid: a5474e2c83032404d9ea70759f6cfae5, type: 2}
+  - {fileID: 1763687838059434, guid: fe01d45021a9fe040a9d880a7b56a9fe, type: 2}
 --- !u!114 &1671600324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3579,6 +3580,10 @@ Prefab:
     - target: {fileID: 400000, guid: 74ce6b5d59e6e5646802ba1413448081, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.005465575
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 74ce6b5d59e6e5646802ba1413448081, type: 3}
+      propertyPath: m_Name
+      value: Social and Behavioral Sciences
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 74ce6b5d59e6e5646802ba1413448081, type: 3}
