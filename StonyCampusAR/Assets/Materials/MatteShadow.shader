@@ -1,5 +1,4 @@
-﻿
-Shader "FX/Matte Shadow" {
+﻿Shader "FX/Matte Shadow" {
 	Properties{
 		_Color("Shadow Color", Color) = (1,1,1,1)
 		_ShadowInt("Shadow Intensity", Range(0,1)) = 1.0
