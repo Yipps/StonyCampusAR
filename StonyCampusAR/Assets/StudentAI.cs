@@ -6,17 +6,21 @@ using UnityEngine.AI;
 public class StudentAI : MonoBehaviour {
 
     public Vector3[] schedule;
-    NavMeshAgent agent;
+    public NavMeshAgent agent;
     public bool moving;
 
     private int currTarget;
 
     // Use this for initialization
+    public void Awake()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
+
     public void Init () {
-        currTarget = 0;
-        agent = GetComponent <NavMeshAgent> ();
-        //agent.destination = schedule[currTarget];
-        //moving = true;
+        currTarget = 0;  
+        agent.destination = schedule[currTarget];
+        moving = true;
 	}
 	
 	// Update is called once per frame

@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 33233513320070968}
   - component: {fileID: 136908913025057986}
   - component: {fileID: 23307611752758256}
-  - component: {fileID: 195496341328015674}
-  - component: {fileID: 114940808284712194}
+  - component: {fileID: 195001219039041432}
+  - component: {fileID: 114801183102211522}
   m_Layer: 0
   m_Name: StudentAI
   m_TagString: Untagged
@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1886719935615820}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.5, y: 1.43, z: 8.04}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,7 +85,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1886719935615820}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114940808284712194
+--- !u!114 &114801183102211522
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -97,6 +97,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   schedule: []
+  agent: {fileID: 0}
+  moving: 0
 --- !u!136 &136908913025057986
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -110,7 +112,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!195 &195496341328015674
+--- !u!195 &195001219039041432
 NavMeshAgent:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -119,8 +121,8 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 10
-  m_Acceleration: 15
+  m_Speed: 3.5
+  m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

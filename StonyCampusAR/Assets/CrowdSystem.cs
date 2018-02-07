@@ -37,9 +37,11 @@ public class CrowdSystem : MonoBehaviour {
         {
             Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
             GameObject _student = Instantiate(student, randSpawn.position, Quaternion.identity);
-            //Vector3[] schedule = schedule = RandSchedule(numDestinations);
-            //_student.GetComponent<StudentAI>().schedule = schedule;
-            //_student.GetComponent<StudentAI>().Init();
+            StudentAI _studentAI = _student.GetComponent<StudentAI>();
+            _studentAI.agent.Warp(randSpawn.position);
+            Vector3[] schedule = RandSchedule(numDestinations);
+            _studentAI.schedule = schedule;
+            _studentAI.Init();
         }
     }
 	
