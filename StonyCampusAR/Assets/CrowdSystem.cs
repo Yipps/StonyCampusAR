@@ -14,7 +14,7 @@ public class CrowdSystem : MonoBehaviour {
 
     private int currStudentCount;
 
-    GameObject[] buildings;
+    BuildingManager bm;
 
     private void Awake()
     {
@@ -37,8 +37,8 @@ public class CrowdSystem : MonoBehaviour {
 
     void Start () {
         currStudentCount = 0;
-        buildings = BuildingManager.instance.buildingGameObjects;
-        Init();
+        bm = BuildingManager.instance;
+        //StartDay();
 	}
 
     public Vector3[] RandSchedule(int count)
@@ -46,6 +46,7 @@ public class CrowdSystem : MonoBehaviour {
         List<Vector3> targets = new List<Vector3>();
         for (int x = 0; x < count; x++)
         {
+            GameObject[] buildings = bm.buildingGameObjects;
             GameObject rand = buildings[Random.Range(0, buildings.Length)];
             NavMeshHit hit;
             NavMesh.SamplePosition(rand.transform.position, out hit, 10f, NavMesh.AllAreas);
@@ -54,25 +55,32 @@ public class CrowdSystem : MonoBehaviour {
         return targets.ToArray();
     }
 
-    public void Init()
+    public void StartDay()
     {
+        CreatePlayer();
         InvokeRepeating("SpawnStudent", 0f, 0.5f);
     }
 
     public void SpawnStudent()
     {
+        //Instantiate student prefab
         Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
-        GameObject _student = Instantiate(student, randSpawn.position, Quaternion.identity);
+        GameObject _student = Instantiate(student, randSpawn.position, Quaternion.identity,transform);
         StudentAI _studentAI = _student.GetComponent<StudentAI>();
         _studentAI.agent.Warp(randSpawn.position);
+
+        //Assign agent destinations
         Vector3[] schedule = RandSchedule(numDestinations);
         _studentAI.schedule = schedule;
+
+        // Start moving
         _studentAI.Init();
+
+        //Stop making students
         currStudentCount++;
         if (currStudentCount == studentCount)
         {
             CancelInvoke();
-            Debug.Log(currStudentCount);
         }
     }
 	
@@ -89,8 +97,27 @@ public class CrowdSystem : MonoBehaviour {
         StartCoroutine(ToggleStudent(student, time));
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    public void CreatePlayer()
+    {
+        Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
+        GameObject player = Instantiate(student, randSpawn.position, Quaternion.identity, transform);
+        StudentAI playerAI = player.GetComponent<StudentAI>();
+
+        List<Vector3> schedule = new List<Vector3>();
+
+        NavMeshHit hit;
+        foreach (Building i in bm.selectedBuildings)
+        {
+            NavMesh.SamplePosition(i.transform.position, out hit, 10f, NavMesh.AllAreas);
+            schedule.Add(hit.position);
+        }
+
+        playerAI.schedule = schedule.ToArray();
+
+        player.GetComponent<Renderer>().material.color = Color.blue;
+
+        playerAI.agent.Warp(randSpawn.position);
+
+        playerAI.Init();
+    }
 }

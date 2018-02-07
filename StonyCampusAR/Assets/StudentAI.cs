@@ -26,10 +26,8 @@ public class StudentAI : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (moving)
-        
             if (!agent.pathPending && !agent.hasPath)
                 CrowdSystem.instance.StartToggleStudent(gameObject, 3f);
-        
     }
 
     public void NextTarget()
@@ -40,7 +38,7 @@ public class StudentAI : MonoBehaviour {
         {
             Debug.Log("die");
             Object.Destroy(gameObject);
-        }
+        }else
             
         agent.destination = schedule[currTarget];
     }
