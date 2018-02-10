@@ -13,6 +13,8 @@ public class CrowdSystem : MonoBehaviour {
     public int numDestinations;
 
     private int currStudentCount;
+    private List<GameObject> students;
+    private GameObject player;
 
     BuildingManager bm;
 
@@ -100,7 +102,8 @@ public class CrowdSystem : MonoBehaviour {
     public void CreatePlayer()
     {
         Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
-        GameObject player = Instantiate(student, randSpawn.position, Quaternion.identity, transform);
+        player = Instantiate(student, randSpawn.position, Quaternion.identity, transform);
+
         StudentAI playerAI = player.GetComponent<StudentAI>();
 
         List<Vector3> schedule = new List<Vector3>();
@@ -119,5 +122,26 @@ public class CrowdSystem : MonoBehaviour {
         playerAI.agent.Warp(randSpawn.position);
 
         playerAI.Init();
+    }
+
+    public void EndDay()
+    {
+        CancelInvoke();
+        currStudentCount = 0;
+
+        foreach (GameObject i in students)
+        {
+            students.Remove(i);
+            GameObject.Destroy(i);
+        }
+
+        if (player != null)
+        {
+            GameObject.Destroy(player);
+            player = null;
+        }
+
+
+
     }
 }
