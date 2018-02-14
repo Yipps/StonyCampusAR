@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [Serializable]
 public class Building:MonoBehaviour
@@ -89,6 +90,13 @@ public class Building:MonoBehaviour
             Vector3 updatedPosition = new Vector3(i.transform.position.x, offset, i.transform.position.z);
             i.transform.position = updatedPosition;
         }
+    }
+
+    public Vector3 GetNavPos()
+    {
+        NavMeshHit hit;
+        NavMesh.SamplePosition(transform.position, out hit, 10f, NavMesh.AllAreas);
+        return hit.position;
     }
 }
 

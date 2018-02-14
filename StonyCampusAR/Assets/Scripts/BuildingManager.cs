@@ -10,7 +10,7 @@ public class BuildingManager : MonoBehaviour {
 
     public GameObject[] buildingGameObjects;
 
-    private Dictionary<string, Building> buildings;
+    public Dictionary<string, Building> buildings;
 
     public List<Building> selectedBuildings;
 
@@ -176,5 +176,6 @@ public class BuildingManager : MonoBehaviour {
         Debug.Log("Icon " + name + " not found");
         return null;
     }
+
 
 }

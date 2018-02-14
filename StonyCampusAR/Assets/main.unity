@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4427178, g: 0.48501593, b: 0.53478175, a: 1}
+  m_IndirectSpecularColor: {r: 0.44271785, g: 0.48501676, b: 0.5347819, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -765,7 +765,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 297522394}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -640, y: 277.4879, z: 0}
+  m_LocalPosition: {x: -640, y: 337.3399, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 531854019}
@@ -857,7 +857,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 332357980}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 417.49213, y: -213.55383, z: 0}
+  m_LocalPosition: {x: 417.49213, y: -273.40582, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1667939397}
@@ -983,7 +983,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 454241962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -639.99994, y: 277.4879, z: 0}
+  m_LocalPosition: {x: -639.99994, y: 337.3399, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 332357981}
@@ -1125,7 +1125,7 @@ GameObject:
   - component: {fileID: 478720392}
   - component: {fileID: 478720391}
   - component: {fileID: 478720390}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1755,7 +1755,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 821198862}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 417.49213, y: -213.55383, z: 0}
+  m_LocalPosition: {x: 417.49213, y: -273.40582, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1491062729}
@@ -1890,7 +1890,7 @@ GameObject:
   m_Component:
   - component: {fileID: 898245006}
   - component: {fileID: 898245005}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Moonlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2271,7 +2271,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1004463812}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 458, y: 397.5121, z: 0}
+  m_LocalPosition: {x: 458, y: 337.6601, z: 0}
   m_LocalScale: {x: 1.0000015, y: 1.0000015, z: 1.0000015}
   m_Children:
   - {fileID: 1624601053}
@@ -2349,7 +2349,7 @@ GameObject:
   - component: {fileID: 1009820563}
   - component: {fileID: 1009820562}
   - component: {fileID: 1009820561}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Moon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2496,8 +2496,12 @@ MonoBehaviour:
   - {fileID: 35685057}
   - {fileID: 194776874}
   - {fileID: 2069338540}
-  studentCount: 50
-  numDestinations: 2
+  studentCount: 20
+  numDestinations: 4
+  secondsInDay: 200
+  currentSeconds: 0
+  maxNumPeriods: 6
+  currentPeriod: 0
 --- !u!1 &1141762365 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: b27b3fc1eeb161945b64b0698c7fccc2, type: 3}
@@ -2815,7 +2819,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1440168906}
   - component: {fileID: 1440168905}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sunlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3935,8 +3939,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1709900604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 414, y: 179.5, z: 0}
-  m_LocalScale: {x: 0.646875, y: 0.646875, z: 0.646875}
+  m_LocalPosition: {x: 507.5, y: 267.5, z: 0}
+  m_LocalScale: {x: 0.79296875, y: 0.79296875, z: 0.79296875}
   m_Children:
   - {fileID: 454241963}
   - {fileID: 297522395}
@@ -4000,7 +4004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1735200580}
   - component: {fileID: 1735200581}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DayNight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4030,7 +4034,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1735200579}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13e363be40901cd43be2717300e07fff, type: 3}
   m_Name: 
@@ -4228,7 +4232,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1860290252}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 68.89996, y: -204.38794, z: 0}
+  m_LocalPosition: {x: 68.89996, y: -264.23993, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1859695177}

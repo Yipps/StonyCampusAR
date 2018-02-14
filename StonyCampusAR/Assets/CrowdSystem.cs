@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,11 +10,20 @@ public class CrowdSystem : MonoBehaviour {
 
     public GameObject student;
     public Transform[] spawnLocations;
+
     public int studentCount;
     public int numDestinations;
 
+    public float secondsInDay;
+    public float currentSeconds;
+    public int maxNumPeriods;
+    public int currentPeriod;
+
+    private float secondsIntoPeriod;
+    private float timePerPeriod;
+
     private int currStudentCount;
-    private List<GameObject> students;
+    private List<GameObject> studentsInClass;
     private GameObject player;
 
     BuildingManager bm;
@@ -40,21 +50,19 @@ public class CrowdSystem : MonoBehaviour {
     void Start () {
         currStudentCount = 0;
         bm = BuildingManager.instance;
+        studentsInClass = new List<GameObject>();
+        timePerPeriod = secondsInDay / maxNumPeriods;
         //StartDay();
-	}
+    }
 
-    public Vector3[] RandSchedule(int count)
+    private void Update()
     {
-        List<Vector3> targets = new List<Vector3>();
-        for (int x = 0; x < count; x++)
-        {
-            GameObject[] buildings = bm.buildingGameObjects;
-            GameObject rand = buildings[Random.Range(0, buildings.Length)];
-            NavMeshHit hit;
-            NavMesh.SamplePosition(rand.transform.position, out hit, 10f, NavMesh.AllAreas);
-            targets.Add(hit.position);
+        currentSeconds += Time.deltaTime;
+        if (currentPeriod != Mathf.FloorToInt(currentSeconds / timePerPeriod)){
+            //next period
+            currentPeriod++;
+            EndClasses();
         }
-        return targets.ToArray();
     }
 
     public void StartDay()
@@ -72,8 +80,7 @@ public class CrowdSystem : MonoBehaviour {
         _studentAI.agent.Warp(randSpawn.position);
 
         //Assign agent destinations
-        Vector3[] schedule = RandSchedule(numDestinations);
-        _studentAI.schedule = schedule;
+        InitSchedule(_student);
 
         // Start moving
         _studentAI.Init();
@@ -99,6 +106,22 @@ public class CrowdSystem : MonoBehaviour {
         StartCoroutine(ToggleStudent(student, time));
     }
 
+    public void EnterClass(GameObject student)
+    {
+        studentsInClass.Add(student);
+        student.SetActive(false);
+    }
+
+    public void EndClasses()
+    {
+        foreach(GameObject i in studentsInClass)
+        {
+            i.SetActive(true);
+            i.GetComponent<StudentAI>().NextTarget();
+        }
+        studentsInClass.Clear();
+    }
+
     public void CreatePlayer()
     {
         Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
@@ -107,13 +130,11 @@ public class CrowdSystem : MonoBehaviour {
         StudentAI playerAI = player.GetComponent<StudentAI>();
 
         List<Vector3> schedule = new List<Vector3>();
-
-        NavMeshHit hit;
         foreach (Building i in bm.selectedBuildings)
         {
-            NavMesh.SamplePosition(i.transform.position, out hit, 10f, NavMesh.AllAreas);
-            schedule.Add(hit.position);
+            schedule.Add(i.GetNavPos());
         }
+
 
         playerAI.schedule = schedule.ToArray();
 
@@ -124,24 +145,73 @@ public class CrowdSystem : MonoBehaviour {
         playerAI.Init();
     }
 
-    public void EndDay()
+    //public void EndDay()
+    //{
+    //    CancelInvoke();
+    //    currStudentCount = 0;
+
+    //    foreach (GameObject i in students)
+    //    {
+    //        students.Remove(i);
+    //        GameObject.Destroy(i);
+    //    }
+
+    //    if (player != null)
+    //    {
+    //        GameObject.Destroy(player);
+    //        player = null;
+    //    }
+
+
+
+    //}
+
+    public Building RandBuilding()
     {
-        CancelInvoke();
-        currStudentCount = 0;
 
-        foreach (GameObject i in students)
+        GameObject[] buildings = bm.buildingGameObjects;
+        GameObject rand = buildings[Random.Range(0, buildings.Length)];
+        return rand.GetComponent<Building>();
+    }
+
+    public void InitSchedule(GameObject student)
+    {
+        bool[] hasClass = new bool[maxNumPeriods];
+        Vector3[] schedule = new Vector3[maxNumPeriods];
+
+        StudentAI studentAI = student.GetComponent<StudentAI>();
+
+        if (studentAI == null)
+            studentAI = student.AddComponent<StudentAI>();
+
+        for(int i = 0; i < hasClass.Length; i++)
+            hasClass[i] = (Random.value < 0.65);
+
+        for (int i = 0; i < hasClass.Length; i++)
         {
-            students.Remove(i);
-            GameObject.Destroy(i);
+            //If student has class during this period
+            if (hasClass[i])
+            {
+                schedule[i] = RandBuilding().GetNavPos();
+                //If student doesn't have class for 2 periods, go home
+            }
+            else if (i == maxNumPeriods - 2)
+            {
+                if (!hasClass[i + 1])
+                {
+                    schedule[i] = spawnLocations[Random.Range(0, spawnLocations.Length)].position;
+                }
+            }
+            else
+            {
+                Building target;
+                BuildingManager.instance.buildings.TryGetValue("Library", out target);
+                schedule[i] = target.GetNavPos();
+            }
         }
 
-        if (player != null)
-        {
-            GameObject.Destroy(player);
-            player = null;
-        }
-
-
-
+        studentAI.schedule = schedule;
+        studentAI.hasClass = hasClass;
+        
     }
 }

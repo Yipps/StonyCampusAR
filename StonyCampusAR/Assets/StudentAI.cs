@@ -6,8 +6,11 @@ using UnityEngine.AI;
 public class StudentAI : MonoBehaviour {
 
     public Vector3[] schedule;
+    public bool[] hasClass;
+
     public NavMeshAgent agent;
     public bool moving;
+
 
     private int currTarget;
 
@@ -19,6 +22,7 @@ public class StudentAI : MonoBehaviour {
 
     public void Init() {
         currTarget = 0;
+
         agent.destination = schedule[currTarget];
         moving = true;
     }
@@ -27,7 +31,7 @@ public class StudentAI : MonoBehaviour {
     void Update() {
         if (moving)
             if (!agent.pathPending && !agent.hasPath)
-                CrowdSystem.instance.StartToggleStudent(gameObject, 3f);
+                CrowdSystem.instance.EnterClass(gameObject);
     }
 
     public void NextTarget()
@@ -36,7 +40,6 @@ public class StudentAI : MonoBehaviour {
         Debug.Log(currTarget);
         if (currTarget == schedule.Length)
         {
-            Debug.Log("die");
             Object.Destroy(gameObject);
         }else
             
