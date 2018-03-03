@@ -18,9 +18,11 @@ public class CrowdSystem : MonoBehaviour {
     public float currentSeconds;
     public int maxNumPeriods;
     public int currentPeriod;
+    public bool isDayStarted;
 
     private float secondsIntoPeriod;
     private float timePerPeriod;
+    private bool isCurrentlySpawning;
 
     private int currStudentCount;
     private List<GameObject> studentsInClass;
@@ -57,22 +59,36 @@ public class CrowdSystem : MonoBehaviour {
 
     private void Update()
     {
-        currentSeconds += Time.deltaTime;
-        if (currentPeriod != Mathf.FloorToInt(currentSeconds / timePerPeriod)){
-            //next period
-            currentPeriod++;
-            EndClasses();
-        }
+        if (isDayStarted)
+        {
+            currentSeconds += Time.deltaTime;
+            secondsIntoPeriod = currentSeconds % timePerPeriod;
+            if (currentPeriod != Mathf.FloorToInt(currentSeconds / timePerPeriod))
+            {
+                //next period
+                currentPeriod++;
+                EndClasses();
+            }
+
+            if (!isCurrentlySpawning && secondsIntoPeriod / timePerPeriod < 0.5 && isDayStarted)
+            {
+                StartCoroutine(SpawnStudent());
+            }
+        } 
     }
 
     public void StartDay()
     {
+        isDayStarted = true;
         CreatePlayer();
-        InvokeRepeating("SpawnStudent", 0f, 0.5f);
+        //InvokeRepeating("SpawnStudent", 0f, 0.5f);
     }
 
-    public void SpawnStudent()
+    public IEnumerator SpawnStudent()
     {
+        isCurrentlySpawning = true;
+        yield return new WaitForSeconds(1);
+
         //Instantiate student prefab
         Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
         GameObject _student = Instantiate(student, randSpawn.position, Quaternion.identity,transform);
@@ -87,10 +103,7 @@ public class CrowdSystem : MonoBehaviour {
 
         //Stop making students
         currStudentCount++;
-        if (currStudentCount == studentCount)
-        {
-            CancelInvoke();
-        }
+        isCurrentlySpawning = false;
     }
 	
     public IEnumerator ToggleStudent(GameObject student, float time)
@@ -117,7 +130,8 @@ public class CrowdSystem : MonoBehaviour {
         foreach(GameObject i in studentsInClass)
         {
             i.SetActive(true);
-            i.GetComponent<StudentAI>().NextTarget();
+            StudentAI stu = i.GetComponent<StudentAI>();
+            stu.agent.SetDestination(stu.schedule[currentPeriod]);
         }
         studentsInClass.Clear();
     }
@@ -184,10 +198,10 @@ public class CrowdSystem : MonoBehaviour {
         if (studentAI == null)
             studentAI = student.AddComponent<StudentAI>();
 
-        for(int i = 0; i < hasClass.Length; i++)
+        for(int i = currentPeriod; i < hasClass.Length; i++)
             hasClass[i] = (Random.value < 0.65);
 
-        for (int i = 0; i < hasClass.Length; i++)
+        for (int i = currentPeriod; i < hasClass.Length; i++)
         {
             //If student has class during this period
             if (hasClass[i])
@@ -209,9 +223,7 @@ public class CrowdSystem : MonoBehaviour {
                 schedule[i] = target.GetNavPos();
             }
         }
-
         studentAI.schedule = schedule;
         studentAI.hasClass = hasClass;
-        
     }
 }

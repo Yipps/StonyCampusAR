@@ -42,7 +42,6 @@ public class StudentAI : MonoBehaviour {
         {
             Object.Destroy(gameObject);
         }else
-            
         agent.destination = schedule[currTarget];
     }
 }
