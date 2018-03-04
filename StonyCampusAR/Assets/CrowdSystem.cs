@@ -13,15 +13,24 @@ public class CrowdSystem : MonoBehaviour {
 
     public int studentCount;
     public int numDestinations;
-
     public float secondsInDay;
-    public float currentSeconds;
     public int maxNumPeriods;
+
+    public float normalSpeed;
+    public float normalAcceleration;
+
+    public float maxSpeed;
+    public float maxAcceleration;
+
     public int currentPeriod;
     public bool isDayStarted;
+    
 
-    private float secondsIntoPeriod;
-    private float timePerPeriod;
+    [HideInInspector]
+    public float currentSeconds;
+    public float secondsLeftInPeriod;
+    public float secondsPerPeriod;
+
     private bool isCurrentlySpawning;
 
     private int currStudentCount;
@@ -30,6 +39,7 @@ public class CrowdSystem : MonoBehaviour {
 
     BuildingManager bm;
 
+    
     private void Awake()
     {
 
@@ -53,7 +63,8 @@ public class CrowdSystem : MonoBehaviour {
         currStudentCount = 0;
         bm = BuildingManager.instance;
         studentsInClass = new List<GameObject>();
-        timePerPeriod = secondsInDay / maxNumPeriods;
+        secondsPerPeriod = secondsInDay / maxNumPeriods;
+        secondsLeftInPeriod = secondsPerPeriod;
         //StartDay();
     }
 
@@ -61,16 +72,21 @@ public class CrowdSystem : MonoBehaviour {
     {
         if (isDayStarted)
         {
+            //Update time
             currentSeconds += Time.deltaTime;
-            secondsIntoPeriod = currentSeconds % timePerPeriod;
-            if (currentPeriod != Mathf.FloorToInt(currentSeconds / timePerPeriod))
+            secondsLeftInPeriod -= Time.deltaTime;
+
+            //Check if its next period
+            if (currentPeriod != Mathf.FloorToInt(currentSeconds / secondsPerPeriod))
             {
                 //next period
                 currentPeriod++;
+                secondsLeftInPeriod = secondsPerPeriod;
                 EndClasses();
             }
 
-            if (!isCurrentlySpawning && secondsIntoPeriod / timePerPeriod < 0.5 && isDayStarted)
+            //Is spawning in a coroutine/ Is the period less than x% over?/ is the day started
+            if (!isCurrentlySpawning && secondsLeftInPeriod < .75 * secondsPerPeriod)
             {
                 StartCoroutine(SpawnStudent());
             }
