@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class CrowdSystem : MonoBehaviour {
-
     public static CrowdSystem instance = null;
 
     public GameObject student;
@@ -25,21 +24,20 @@ public class CrowdSystem : MonoBehaviour {
     public int currentPeriod;
     public bool isDayStarted;
     
-
     [HideInInspector]
     public float currentSeconds;
     public float secondsLeftInPeriod;
     public float secondsPerPeriod;
 
-    private bool isCurrentlySpawning;
+    private bool isInSpawningCoroutine;
 
     private int currStudentCount;
     private List<GameObject> studentsInClass;
     private GameObject player;
 
     BuildingManager bm;
+    private bool isSpawning;
 
-    
     private void Awake()
     {
 
@@ -76,17 +74,20 @@ public class CrowdSystem : MonoBehaviour {
             currentSeconds += Time.deltaTime;
             secondsLeftInPeriod -= Time.deltaTime;
 
+            if (secondsLeftInPeriod < 0.40 * secondsPerPeriod)
+                isSpawning = false;
+
             //Check if its next period
             if (currentPeriod != Mathf.FloorToInt(currentSeconds / secondsPerPeriod))
             {
                 //next period
                 currentPeriod++;
                 secondsLeftInPeriod = secondsPerPeriod;
+                isSpawning = true;
                 EndClasses();
             }
 
-            //Is spawning in a coroutine/ Is the period less than x% over?/ is the day started
-            if (!isCurrentlySpawning && secondsLeftInPeriod < .75 * secondsPerPeriod)
+            if (!isInSpawningCoroutine && isSpawning)
             {
                 StartCoroutine(SpawnStudent());
             }
@@ -96,13 +97,14 @@ public class CrowdSystem : MonoBehaviour {
     public void StartDay()
     {
         isDayStarted = true;
+        isSpawning = true;
         CreatePlayer();
         //InvokeRepeating("SpawnStudent", 0f, 0.5f);
     }
 
     public IEnumerator SpawnStudent()
     {
-        isCurrentlySpawning = true;
+        isInSpawningCoroutine = true;
         yield return new WaitForSeconds(1);
 
         //Instantiate student prefab
@@ -119,7 +121,7 @@ public class CrowdSystem : MonoBehaviour {
 
         //Stop making students
         currStudentCount++;
-        isCurrentlySpawning = false;
+        isInSpawningCoroutine = false;
     }
 	
     public IEnumerator ToggleStudent(GameObject student, float time)
@@ -173,6 +175,16 @@ public class CrowdSystem : MonoBehaviour {
         playerAI.agent.Warp(randSpawn.position);
 
         playerAI.Init();
+    }
+
+    private void OnGUI()
+    {
+        GUI.contentColor = Color.red;
+        GUI.Label(new Rect(0, Screen.height - 100, 400, 100),"Day Start = " + isDayStarted.ToString());
+        GUI.Label(new Rect(0, Screen.height - 80, 400, 100), "Is Spawning: " + isSpawning.ToString());
+        GUI.Label(new Rect(0, Screen.height - 60, 400, 100), "#Students: " + currStudentCount);
+        GUI.Label(new Rect(0, Screen.height - 40, 400, 100), "Current Period: " + currentPeriod);
+        GUI.Label(new Rect(0, Screen.height - 20, 400, 100), "Time until next Period: " + secondsLeftInPeriod);
     }
 
     //public void EndDay()
