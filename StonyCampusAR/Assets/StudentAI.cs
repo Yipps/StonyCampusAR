@@ -25,9 +25,10 @@ public class StudentAI : MonoBehaviour {
     public void Init() {
         currTarget = 0;
         agent.destination = schedule[currTarget];
-        //agent.speed = cs.normalSpeed;
-        //maxSpeed = cs.maxSpeed;
-        //agent.acceleration = cs.normalSpeed;
+        agent.speed = cs.normalSpeed;
+        normalSpeed = cs.normalSpeed;
+        maxSpeed = cs.maxSpeed;
+        agent.acceleration = cs.normalAcceleration;
         moving = true;
     }
 
@@ -35,7 +36,7 @@ public class StudentAI : MonoBehaviour {
         if (moving)
             if (!agent.pathPending && !agent.hasPath)
                 CrowdSystem.instance.EnterClass(gameObject);
-        //UpdateSpeed(cs.secondsLeftInPeriod);
+        UpdateSpeed(cs.secondsLeftInPeriod);
 
     }
 
@@ -54,16 +55,16 @@ public class StudentAI : MonoBehaviour {
     public void UpdateSpeed(float secondsLeftInPeriod)
     {
         float timeLeft = secondsLeftInPeriod / cs.secondsPerPeriod;
-        Debug.Log(normalSpeed + (maxSpeed - normalSpeed) * 0.25f);
-        if (timeLeft < .75)
-            agent.speed = maxSpeed;
-        else if (timeLeft < .8)
-            agent.speed = normalSpeed + (maxSpeed - normalSpeed) * 0.50f;
-        else if (timeLeft < .9)
-            agent.speed =  normalSpeed + (maxSpeed - normalSpeed) * 0.25f;
-        
-        
+        agent.speed = normalSpeed + (maxSpeed - normalSpeed) * (1 - timeLeft);
+        //if (timeLeft < .50)
+        //    agent.speed = maxSpeed;
+        //else if (timeLeft < .75)
+        //    agent.speed = normalSpeed + (maxSpeed - normalSpeed) * 0.50f;
+        //else if (timeLeft < .9)
+        //    agent.speed =  normalSpeed + (maxSpeed - normalSpeed) * 0.25f;
+        //Debug.Log(agent.speed);
+
         //agent.speed 
-        
+
     }
 }
