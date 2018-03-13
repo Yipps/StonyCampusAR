@@ -10,10 +10,13 @@ public class CrowdSystem : MonoBehaviour {
     public GameObject student;
     public Transform[] spawnLocations;
 
+    public GameObject player;
+
     public int studentCount;
     public int numDestinations;
     public float secondsInDay;
     public int maxNumPeriods;
+    public float spawnDelayInSeconds;
 
     public float normalSpeed;
     public float normalAcceleration;
@@ -33,7 +36,6 @@ public class CrowdSystem : MonoBehaviour {
 
     private int currStudentCount;
     private List<GameObject> studentsInClass;
-    private GameObject player;
 
     BuildingManager bm;
     private bool isSpawning;
@@ -105,7 +107,7 @@ public class CrowdSystem : MonoBehaviour {
     public IEnumerator SpawnStudent()
     {
         isInSpawningCoroutine = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(spawnDelayInSeconds);
 
         //Instantiate student prefab
         Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
@@ -124,19 +126,6 @@ public class CrowdSystem : MonoBehaviour {
         isInSpawningCoroutine = false;
     }
 	
-    public IEnumerator ToggleStudent(GameObject student, float time)
-    {
-        student.SetActive(false);
-        yield return new WaitForSeconds(5f);
-        student.SetActive(true);
-        student.GetComponent<StudentAI>().NextTarget();
-    }
-
-    public void StartToggleStudent(GameObject student, float time)
-    {
-        StartCoroutine(ToggleStudent(student, time));
-    }
-
     public void EnterClass(GameObject student)
     {
         studentsInClass.Add(student);
@@ -149,6 +138,7 @@ public class CrowdSystem : MonoBehaviour {
         {
             i.SetActive(true);
             StudentAI stu = i.GetComponent<StudentAI>();
+            stu.currTarget++;
             stu.agent.SetDestination(stu.schedule[currentPeriod]);
         }
         studentsInClass.Clear();
@@ -159,7 +149,12 @@ public class CrowdSystem : MonoBehaviour {
         Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
         player = Instantiate(student, randSpawn.position, Quaternion.identity, transform);
 
+
+        //HACK HACK HACK
         StudentAI playerAI = player.GetComponent<StudentAI>();
+        Destroy(playerAI);
+
+        playerAI = player.AddComponent<PlayerAI>();
 
         List<Vector3> schedule = new List<Vector3>();
         foreach (Building i in bm.selectedBuildings)
@@ -185,6 +180,16 @@ public class CrowdSystem : MonoBehaviour {
         GUI.Label(new Rect(0, Screen.height - 60, 400, 100), "#Students: " + currStudentCount);
         GUI.Label(new Rect(0, Screen.height - 40, 400, 100), "Current Period: " + currentPeriod);
         GUI.Label(new Rect(0, Screen.height - 20, 400, 100), "Time until next Period: " + secondsLeftInPeriod);
+    }
+
+    public StudentAI GetPlayerAI()
+    {
+        return player.GetComponent<StudentAI>();
+    }
+
+    public NavMeshAgent GetPlayerAgent()
+    {
+        return player.GetComponent<NavMeshAgent>();
     }
 
     //public void EndDay()

@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 public class StudentAI : MonoBehaviour {
 
-    private CrowdSystem cs;
+    public CrowdSystem cs;
     public Vector3[] schedule;
     public bool[] hasClass;
-    private int currTarget;
+    public int currTarget;
 
     public NavMeshAgent agent;
     public bool moving;
@@ -38,17 +38,6 @@ public class StudentAI : MonoBehaviour {
                 CrowdSystem.instance.EnterClass(gameObject);
         UpdateSpeed(cs.secondsLeftInPeriod);
 
-    }
-
-    public void NextTarget()
-    { 
-        currTarget++;
-        Debug.Log(currTarget);
-        if (currTarget == schedule.Length)
-        {
-            Object.Destroy(gameObject);
-        }else
-        agent.destination = schedule[currTarget];
     }
 
     //increase speed as 
