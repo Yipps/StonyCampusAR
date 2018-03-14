@@ -252,7 +252,7 @@ public class CrowdSystem : MonoBehaviour {
             else
             {
                 Building target;
-                BuildingManager.instance.buildings.TryGetValue("Library", out target);
+                BuildingManager.instance.buildingsDict.TryGetValue("Library", out target);
                 schedule[i] = target.GetNavPos();
             }
         }

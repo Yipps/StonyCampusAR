@@ -1,62 +1,82 @@
 [
 		{
-			"buildingName": "Administration"
+			"buildingName": "Administration",
+            "description": ""
 		},
 		{
-			"buildingName": "Staller"
+			"buildingName": "Staller",
+            "description": ""
 		},
 		{
-			"buildingName": "Library"
+			"buildingName": "Library",
+            "description": ""
 		},
 		{
-			"buildingName": "Computer Science"
+			"buildingName": "Computer Science",
+            "description": ""
 		},
 		{
-			"buildingName": "ESS"
+			"buildingName": "ESS",
+            "description": ""
 		},
 		{
-			"buildingName": "Frey Hall"
+            "buildingName": "Frey Hall",
+            "description": ""
 		},
 		{
-			"buildingName": "Chemistry"
+			"buildingName": "Chemistry",
+            "description": ""
 		},
 		{
-			"buildingName": "Harriman Hall"
+			"buildingName": "Harriman Hall",
+            "description": ""
 		},
 		{
-			"buildingName": "SAC"
+			"buildingName": "SAC",
+            "description": ""
 		},
 		{
-			"buildingName": "New Computer Science"
+			"buildingName": "New Computer Science",
+            "description": ""
 		},
 		{
-			"buildingName": "Heavy Engineering"
+			"buildingName": "Heavy Engineering",
+            "description": ""
 		},
 		{
-			"buildingName": "Light Engineering"
+			"buildingName": "Light Engineering",
+            "description": ""
 		},
 		{
-			"buildingName": "Computing Center"
+			"buildingName": "Computing Center",
+            "description": ""
 		},
 		{
-			"buildingName": "Engineering"
+			"buildingName": "Engineering",
+            "description": ""
 		},
 		{
-			"buildingName": "Javits"
+			"buildingName": "Javits",
+            "description": ""
 		},
 		{
-			"buildingName": "Psychology"
+			"buildingName": "Psychology",
+            "description": ""
 		},
 		{
-			"buildingName": "Social and Behavorial Sciences"
+			"buildingName": "Social and Behavorial Sciences",
+            "description": ""
 		},
 		{
-			"buildingName": "Physics"
+			"buildingName": "Physics",
+            "description": ""
 		},
 		{
-			"buildingName": "Math"
+			"buildingName": "Math",
+            "description": ""
 		},
 		{
-			"buildingName": "Simons Center"
+			"buildingName": "Simons Center",
+            "description": ""
 		}
 	]

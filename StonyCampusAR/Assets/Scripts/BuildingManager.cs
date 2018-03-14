@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class BuildingManager : MonoBehaviour {
 
@@ -10,7 +11,7 @@ public class BuildingManager : MonoBehaviour {
 
     public GameObject[] buildingGameObjects;
 
-    public Dictionary<string, Building> buildings;
+    public Dictionary<string, Building> buildingsDict;
 
     public List<Building> selectedBuildings;
 
@@ -40,6 +41,7 @@ public class BuildingManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         Init();
+        
     }
 
     private void OnEnable()
@@ -72,17 +74,16 @@ public class BuildingManager : MonoBehaviour {
     {
         organizations = new List<string>();
         departments = new List<string>();
-        buildings = new Dictionary<string, Building>();
+        buildingsDict = new Dictionary<string, Building>();
         selectedBuildings = new List<Building>();
 
         foreach (GameObject i in buildingGameObjects)
         {
             Building building = i.AddComponent<Building>();
-            buildings.Add(building.name, building);
+            buildingsDict.Add(building.name, building);
         }
 
         LoadBuildingData();
-
         LoadFacilityData();
     }
 
@@ -95,9 +96,9 @@ public class BuildingManager : MonoBehaviour {
         Building building = null;
         foreach (BuildingData i in buildingData)
         {
-            if(buildings.TryGetValue(i.buildingName, out building))
+            if(buildingsDict.TryGetValue(i.buildingName, out building))
             {
-                building.name = i.buildingName;
+                building.buildingName = i.buildingName;
             }
             else
             {
@@ -106,6 +107,8 @@ public class BuildingManager : MonoBehaviour {
 
         }
     }
+
+
 
     private void LoadFacilityData()
     {
@@ -119,7 +122,7 @@ public class BuildingManager : MonoBehaviour {
             if (!organizations.Contains(i.organization))
                 organizations.Add(i.organization);
 
-            if(buildings.TryGetValue(i.building,out building)){
+            if(buildingsDict.TryGetValue(i.building,out building)){
                 building.facilities.Add(i);
             }
             else
@@ -140,7 +143,6 @@ public class BuildingManager : MonoBehaviour {
         }
     }
 
-
     //Helper method, returns an array of buildings containing a facilities of a certain organization
     public Building[] FilterBuildingsByOrganization(string org)
     {
@@ -155,7 +157,7 @@ public class BuildingManager : MonoBehaviour {
             if(i.organization == org)
             {
                 //check if the facility building exists
-                if (buildings.TryGetValue(i.building, out building))
+                if (buildingsDict.TryGetValue(i.building, out building))
                 {
                     //check if the building is already in the list
                     if (!filteredBuildings.Contains(building))
@@ -177,5 +179,9 @@ public class BuildingManager : MonoBehaviour {
         return null;
     }
 
-
+    private void OpenBuildingInfo(Building building)
+    {
+        GameObject buildingInfo = Instantiate(Resources.Load("Prefabs/BuildingInfoWindow") as GameObject, GameObject.Find("Canvas").transform);
+        buildingInfo.GetComponent<BuildingInfoGUI>().LoadInfo(building);
+    }
 }
