@@ -47,6 +47,7 @@ public class BuildingManager : MonoBehaviour {
     private void OnEnable()
     {
         EventManager.StartListening("BuildingSelected", BuildingSelected);
+        EventManager.StartListening("OpenBuildingInfo", OpenBuildingInfo);
     }
 
     private void OnDisable()
@@ -179,8 +180,9 @@ public class BuildingManager : MonoBehaviour {
         return null;
     }
 
-    private void OpenBuildingInfo(Building building)
+    private void OpenBuildingInfo(GameObject buildingGameobject)
     {
+        Building building = buildingGameobject.GetComponentInParent<Building>();
         GameObject buildingInfo = Instantiate(Resources.Load("Prefabs/BuildingInfoWindow") as GameObject, GameObject.Find("Canvas").transform);
         buildingInfo.GetComponent<BuildingInfoGUI>().LoadInfo(building);
     }

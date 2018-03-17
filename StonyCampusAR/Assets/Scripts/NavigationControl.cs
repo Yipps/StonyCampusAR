@@ -2,23 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
-public class NavigationControl : MonoBehaviour {
+public class NavigationControl : MonoBehaviour
+{
 
     public static NavigationControl instance = null;
     public List<Vector3> waypoints;
     public List<int> waypoint_buildingIndexes;
     private LineRenderer renderedPath;
+    private float touchHoldTimer = 0;
+    private RaycastHit hit;
+    private Touch touch;
+    private bool isHeld;
 
-	
-	void Awake () {
-        if (instance == null)   
+    void Awake()
+    {
+        if (instance == null)
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
         Init();
     }
-	
+
     public void ComputePath(List<Building> selectedBuildings)
     {
         if (selectedBuildings.Count < 1)
@@ -45,7 +51,7 @@ public class NavigationControl : MonoBehaviour {
                 NavMesh.CalculatePath(currentSample.position, nextSample.position, NavMesh.AllAreas, navPath);
                 waypoints.AddRange(navPath.corners);
 
-                waypoint_buildingIndexes.Add(waypoints.Count-1);
+                waypoint_buildingIndexes.Add(waypoints.Count - 1);
 
             }
             renderedPath.positionCount = waypoints.Count;
@@ -61,6 +67,7 @@ public class NavigationControl : MonoBehaviour {
         waypoints = new List<Vector3>();
         waypoint_buildingIndexes = new List<int>();
         renderedPath = this.GetComponent<LineRenderer>();
+        hit = new RaycastHit();
         if (renderedPath == null)
         {
             renderedPath = this.gameObject.AddComponent<LineRenderer>();
@@ -73,7 +80,7 @@ public class NavigationControl : MonoBehaviour {
     {
         ListenToClicks();
 
-        if (CrowdSystem.instance.isDayStarted )
+        if (CrowdSystem.instance.isDayStarted)
             RedrawPath();
     }
 
@@ -103,25 +110,61 @@ public class NavigationControl : MonoBehaviour {
             renderedPath.SetPosition(i, updatedPath[i]);
         }
     }
-    
+
 
     private void ListenToClicks()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.touchCount > 0 && !IsPointerOverUIObject())
         {
-            //Can't select buildings when day is started
-            if (!CrowdSystem.instance.isDayStarted)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                Debug.Log(ray.ToString());
-                RaycastHit hit;
-                Physics.Raycast(ray, out hit);
+            touch = Input.GetTouch(0);
+            touchHoldTimer += Input.GetTouch(0).deltaTime;
 
-                if (hit.transform && hit.transform.tag != "Road")
-                {
-                    EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
-                }
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                Physics.Raycast(ray, out hit);
+                isHeld = false;
+            }
+            if (touchHoldTimer > 1f)
+            {
+                touchHoldTimer = 0;
+                isHeld = true;
+                ProcessRaycast(hit, true);
+                touch.phase = TouchPhase.Ended;
+            }
+            else if (touch.phase == TouchPhase.Ended && !isHeld)
+            {
+                touchHoldTimer = 0;
+                ProcessRaycast(hit, false);
             }
         }
+    }
+
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(0, 20, 400, 100), Input.touchCount.ToString());
+        GUI.Label(new Rect(0, 0, 400, 100), "Hold: " + touchHoldTimer.ToString());
+        GUI.Label(new Rect(0, 40, 400, 100), "Phase: " + touch.phase);
+    }
+
+    public void ProcessRaycast(RaycastHit hit, bool isHolding)
+    {
+
+        if (hit.transform.parent.tag != "CampusBuildings")
+            return;
+
+        if (isHolding)
+            EventManager.TriggerEvent("OpenBuildingInfo", hit.transform.gameObject);
+        else
+            EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
+    }
+
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 }
