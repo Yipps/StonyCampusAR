@@ -15,6 +15,8 @@ public class NavigationControl : MonoBehaviour
     private RaycastHit hit;
     private Touch touch;
     private bool isHeld;
+    private bool isSpawnMovable = true;
+    public Transform spawnPoint;
 
     void Awake()
     {
@@ -68,6 +70,7 @@ public class NavigationControl : MonoBehaviour
         waypoint_buildingIndexes = new List<int>();
         renderedPath = this.GetComponent<LineRenderer>();
         hit = new RaycastHit();
+        if (spawnPoint == null) spawnPoint = new GameObject().transform;
         if (renderedPath == null)
         {
             renderedPath = this.gameObject.AddComponent<LineRenderer>();
@@ -99,10 +102,6 @@ public class NavigationControl : MonoBehaviour
         int waypointIndex = waypoint_buildingIndexes[playerAI.currTarget];
 
         updatedPath.AddRange(waypoints.GetRange(waypointIndex, waypoints.Count - waypointIndex));
-        //for (int x = waypoint_buildingIndexes[playerAI.currTarget]; x < renderedPath.positionCount; x++)
-        //{
-        //    updatedPath.Add(renderedPath.GetPosition(x));
-        //}
 
         renderedPath.positionCount = updatedPath.Count;
         for (int i = 0; i < updatedPath.Count; i++)
@@ -111,40 +110,51 @@ public class NavigationControl : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(spawnPoint.position, 5f);
+    }
 
     private void ListenToClicks()
     {
         if (Input.touchCount > 0 && !IsPointerOverUIObject())
         {
-            touch = Input.GetTouch(0);
-            touchHoldTimer += Input.GetTouch(0).deltaTime;
+            if (isSpawnMovable)
+            {
+                Touch touch = Input.GetTouch(0); // get first touch since touch count is greater than zero
 
-            if (touch.phase == TouchPhase.Began)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                Physics.Raycast(ray, out hit);
-                isHeld = false;
+                if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
+                {
+                    spawnPoint.Translate(touch.deltaPosition.x * 0.1f, 0, touch.deltaPosition.y * 0.1f, Space.World);
+                    
+                    Debug.Log(touch.deltaPosition.x * 0.5f);
+                }
             }
-            if (touchHoldTimer > 1f)
+            else
             {
-                touchHoldTimer = 0;
-                isHeld = true;
-                ProcessRaycast(hit, true);
-                touch.phase = TouchPhase.Ended;
-            }
-            else if (touch.phase == TouchPhase.Ended && !isHeld)
-            {
-                touchHoldTimer = 0;
-                ProcessRaycast(hit, false);
+                touch = Input.GetTouch(0);
+                touchHoldTimer += Input.GetTouch(0).deltaTime;
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                    Physics.Raycast(ray, out hit);
+                    isHeld = false;
+                }
+                if (touchHoldTimer > 1f)
+                {
+                    touchHoldTimer = 0;
+                    isHeld = true;
+                    ProcessRaycast(hit, true);
+                    touch.phase = TouchPhase.Ended;
+                }
+                else if (touch.phase == TouchPhase.Ended && !isHeld)
+                {
+                    touchHoldTimer = 0;
+                    ProcessRaycast(hit, false);
+                }
             }
         }
-    }
-
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(0, 20, 400, 100), Input.touchCount.ToString());
-        GUI.Label(new Rect(0, 0, 400, 100), "Hold: " + touchHoldTimer.ToString());
-        GUI.Label(new Rect(0, 40, 400, 100), "Phase: " + touch.phase);
     }
 
     public void ProcessRaycast(RaycastHit hit, bool isHolding)
