@@ -11,13 +11,8 @@ public class Building:MonoBehaviour
     public string description;
     public bool isSelected;
     public List<Facility> facilities;
-
-    //private Dictionary<String,GameObject> icons;
     private List<GameObject> icons;
     private float spacing = 3;
-    
-
-
     private MeshRenderer renderer;
 
     private void Awake()
@@ -42,11 +37,6 @@ public class Building:MonoBehaviour
         }
         return isSelected;
     }
-
-    //public void ShowFacility(GameObject icon)
-    //{
-    //    Instantiate(icon, this.transform.position + new Vector3(0,10,0), Quaternion.identity);
-    //}
 
     public void ToggleIcon(GameObject icon)
     {

@@ -3,11 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GpsStatus { Started, Disabled, Pending, Failed, Succeed };
+
 public class Gps : MonoBehaviour {
-    public float latitude;
-    public float longitude;
-    public bool hasCoordinates;
+    public float latitude = 40.915629f;
+    public float longitude = -73.125016f;
     bool isUnityRemote = true;
+
+    public GpsStatus gpsStatus;
 
     private float xMax = 43f;
     private float yMax = 36f;
@@ -17,14 +20,10 @@ public class Gps : MonoBehaviour {
     private float latMax = 40.91647f;
 
 
+
     private void Start()
     {
         StartCoroutine(StartLocationService(50, 600));
-    }
-
-    private void Update()
-    {
-
     }
 
     private void OnGUI()
@@ -44,11 +43,13 @@ public class Gps : MonoBehaviour {
         if (!Input.location.isEnabledByUser)
         {
             Debug.Log("No locations enabled in the device");
+            gpsStatus = GpsStatus.Disabled;
             yield break;
         }
 
         // Start service before querying location
         Input.location.Start(desiredAccuracyInMeters,updateDistanceInMeters);
+        gpsStatus = GpsStatus.Started;
 
         if (isUnityRemote)
         {
@@ -57,6 +58,7 @@ public class Gps : MonoBehaviour {
 
         // Wait until service initializes
         int maxWait = 20;
+        gpsStatus = GpsStatus.Pending;
         while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
         {
             yield return new WaitForSeconds(1);
@@ -67,46 +69,44 @@ public class Gps : MonoBehaviour {
         if (maxWait < 1)
         {
             Debug.Log("Service didn't initialize in 20 seconds");
-            latitude = Input.location.lastData.latitude;
-            longitude = Input.location.lastData.longitude;
+            gpsStatus = GpsStatus.Failed;
             yield break;
         }
 
         // Connection has failed
         if (Input.location.status == LocationServiceStatus.Failed)
         {
+            gpsStatus = GpsStatus.Failed;
             Debug.Log("Unable to determine device location");
+            GameManager.instance.gamePhase = GamePhase.Planning;
             yield break;
         }
         // Access granted and location value could be retrieved
         else
         {
-            hasCoordinates = true;
+            gpsStatus = GpsStatus.Succeed;
             latitude = Input.location.lastData.latitude;
             longitude = Input.location.lastData.longitude;
-            InitYouAreHere();
+            GameManager.instance.gamePhase = GamePhase.Planning;
         }
     }
 
     public Vector3 PingMap()
     {
-        float normLat = 2 * (latitude - latMin) / (latMax - latMin) - 1;
-        float normLong = 2 * (longitude - longMin) / (longMax - longMin) - 1;
+        if (gpsStatus == GpsStatus.Succeed)
+        {
+            float normLat = 2 * (latitude - latMin) / (latMax - latMin) - 1;
+            float normLong = 2 * (longitude - longMin) / (longMax - longMin) - 1;
 
-        float x = normLong * xMax;
-        float z = normLat * yMax;
+            float x = normLong * xMax;
+            float z = normLat * yMax;
 
-        return new Vector3(x, 0, z);
-    }
-
-    public void InitYouAreHere()
-    {
-        if (!hasCoordinates)
-            return;
-
-        Vector3 pos = PingMap();
-
-        GameObject userLocation = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        userLocation.transform.position = pos;
+            return new Vector3(x, 7, z);
+        }
+        else
+        {
+            Debug.Log("Coordinates unavailable");
+            return Vector3.zero;
+        }
     }
 }

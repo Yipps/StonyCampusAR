@@ -9,7 +9,7 @@ public class CrowdSystem : MonoBehaviour {
 
     public GameObject student;
     public Transform[] spawnLocations;
-
+    public Transform playerSpawn;
     public GameObject player;
 
     public int studentCount;
@@ -191,27 +191,6 @@ public class CrowdSystem : MonoBehaviour {
     {
         return player.GetComponent<NavMeshAgent>();
     }
-
-    //public void EndDay()
-    //{
-    //    CancelInvoke();
-    //    currStudentCount = 0;
-
-    //    foreach (GameObject i in students)
-    //    {
-    //        students.Remove(i);
-    //        GameObject.Destroy(i);
-    //    }
-
-    //    if (player != null)
-    //    {
-    //        GameObject.Destroy(player);
-    //        player = null;
-    //    }
-
-
-
-    //}
 
     public Building RandBuilding()
     {

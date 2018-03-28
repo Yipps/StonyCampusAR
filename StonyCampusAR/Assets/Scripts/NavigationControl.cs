@@ -10,13 +10,14 @@ public class NavigationControl : MonoBehaviour
     public static NavigationControl instance = null;
     public List<Vector3> waypoints;
     public List<int> waypoint_buildingIndexes;
+    public bool isSpawnMovable = true;
+    public Transform spawnPoint;
     private LineRenderer renderedPath;
     private float touchHoldTimer = 0;
     private RaycastHit hit;
     private Touch touch;
     private bool isHeld;
-    private bool isSpawnMovable = true;
-    public Transform spawnPoint;
+    
 
     void Awake()
     {
