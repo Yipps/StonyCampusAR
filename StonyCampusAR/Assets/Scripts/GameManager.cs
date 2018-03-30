@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour {
     bool hasPlayedIntro;
     public GamePhase gamePhase;
 
-
     private void Awake()
     {
 
@@ -39,7 +38,8 @@ public class GameManager : MonoBehaviour {
     void Start () {
         Init();
 
-        StartIntro();
+        StartCoroutine(StartIntro());
+        
 
     }
 
@@ -65,16 +65,18 @@ public class GameManager : MonoBehaviour {
     {
         gamePhase = GamePhase.Planning;
         Vector3 pos = _gps.PingMap();
-        GameObject spawnPointer = GameObject.Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject, pos, Quaternion.identity, transform.GetChild(0));
+        Debug.Log(pos);
+        GameObject spawnPointer = GameObject.Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject,transform.GetChild(0));
+        spawnPointer.transform.localPosition = pos;
+        //spawnPointer.transform.position = pos;
         _navControl.isSpawnMovable = true;
-
-      
+        _navControl.spawnPoint = spawnPointer.transform;
 
     }
 
 	// Update is called once per frame
 	void Update () {
-        if (gamePhase == GamePhase.Planning && hasPlayedIntro)
+        if (gamePhase == GamePhase.Planning && hasPlayedIntro && _navControl.spawnPoint == null)
         {
             InitSpawnSelection();
         }

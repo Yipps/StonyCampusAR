@@ -109,8 +109,6 @@ public class BuildingManager : MonoBehaviour {
         }
     }
 
-
-
     private void LoadFacilityData()
     {
         TextAsset facilityJson = Resources.Load<TextAsset>("FacilityData");
@@ -185,5 +183,24 @@ public class BuildingManager : MonoBehaviour {
         Building building = buildingGameobject.GetComponentInParent<Building>();
         GameObject buildingInfo = Instantiate(Resources.Load("Prefabs/BuildingInfoWindow") as GameObject, GameObject.Find("Canvas").transform);
         buildingInfo.GetComponent<BuildingInfoGUI>().LoadInfo(building);
+    }
+
+    public static GameObject FindNearestBuilding(Vector3 targetPosition)
+    {
+        GameObject nearest = new GameObject();
+        GameObject[] BuildingGameObjects = GameObject.FindGameObjectsWithTag("CampusBuildings");
+
+        float closestDist = Mathf.Infinity;
+        foreach (GameObject i in BuildingGameObjects)
+        {
+            Vector3 direction = targetPosition - i.transform.position;
+            float dist = direction.sqrMagnitude;
+            if (dist < closestDist)
+            {
+                closestDist = dist;
+                nearest = i;
+            }
+        }
+        return nearest;
     }
 }

@@ -11,7 +11,7 @@ public class NavigationControl : MonoBehaviour
     public List<Vector3> waypoints;
     public List<int> waypoint_buildingIndexes;
     public bool isSpawnMovable = true;
-    public Transform spawnPoint;
+    public Transform spawnPoint = null;
     private LineRenderer renderedPath;
     private float touchHoldTimer = 0;
     private RaycastHit hit;
@@ -71,7 +71,6 @@ public class NavigationControl : MonoBehaviour
         waypoint_buildingIndexes = new List<int>();
         renderedPath = this.GetComponent<LineRenderer>();
         hit = new RaycastHit();
-        if (spawnPoint == null) spawnPoint = new GameObject().transform;
         if (renderedPath == null)
         {
             renderedPath = this.gameObject.AddComponent<LineRenderer>();
@@ -111,11 +110,6 @@ public class NavigationControl : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(spawnPoint.position, 5f);
-    }
-
     private void ListenToClicks()
     {
         if (Input.touchCount > 0 && !IsPointerOverUIObject())
@@ -127,8 +121,17 @@ public class NavigationControl : MonoBehaviour
                 if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
                 {
                     spawnPoint.Translate(touch.deltaPosition.x * 0.1f, 0, touch.deltaPosition.y * 0.1f, Space.World);
-                    
-                    Debug.Log(touch.deltaPosition.x * 0.5f);
+                }
+
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    //GameObject closestBuilding = BuildingManager.FindNearestBuilding(spawnPoint.position);
+                    //closestBuilding.GetComponent<Building>().Selected();
+                    Collider[] buildings = Physics.OverlapSphere(spawnPoint.position, 5f);
+                    foreach(Collider i in buildings)
+                    {
+                        Debug.Log(i.gameObject.name);
+                    }
                 }
             }
             else

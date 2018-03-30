@@ -34,7 +34,11 @@ public class LatLongMapping : MonoBehaviour {
 
     private void OnDrawGizmos()
     {
-        
+        foreach (GameObject i in gizmos)
+        {
+            Gizmos.DrawWireSphere(i.transform.position,10);
+        }
+            
             
     }
 

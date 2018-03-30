@@ -23,7 +23,7 @@ public class Gps : MonoBehaviour {
 
     private void Start()
     {
-        StartCoroutine(StartLocationService(50, 600));
+        StartCoroutine(StartLocationService(10, 600));
     }
 
     private void OnGUI()
@@ -101,7 +101,8 @@ public class Gps : MonoBehaviour {
             float x = normLong * xMax;
             float z = normLat * yMax;
 
-            return new Vector3(x, 7, z);
+            Vector3 pos = new Vector3(x, 7, z);
+            return pos;
         }
         else
         {
