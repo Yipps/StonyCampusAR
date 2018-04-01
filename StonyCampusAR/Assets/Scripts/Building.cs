@@ -15,6 +15,9 @@ public class Building:MonoBehaviour
     private float spacing = 3;
     private MeshRenderer renderer;
 
+    [NonSerialized]
+    public Animator animator;
+
     private void Awake()
     {
         isSelected = false;
@@ -87,6 +90,11 @@ public class Building:MonoBehaviour
         NavMeshHit hit;
         NavMesh.SamplePosition(transform.position, out hit, 10f, NavMesh.AllAreas);
         return hit.position;
+    }
+
+    public void SpawnAnimation()
+    {
+        animator.SetTrigger("spawn");
     }
 }
 

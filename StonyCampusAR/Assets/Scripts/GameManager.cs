@@ -48,7 +48,12 @@ public class GameManager : MonoBehaviour {
         //Welcome Animation
 
         gamePhase = GamePhase.Initalizing;
-        yield return new WaitForSeconds(5);
+        GameObject[] animations = GameObject.FindGameObjectsWithTag("IntroAnimation");
+        yield return new WaitForSeconds(1f);
+        animations[0].GetComponent<Animator>().SetTrigger("spawn");
+        yield return new WaitForSeconds(3f);
+        animations[1].GetComponent<Animator>().SetTrigger("spawn");
+        yield return new WaitForSeconds(3f);
         hasPlayedIntro = true;
 
     }
@@ -71,6 +76,7 @@ public class GameManager : MonoBehaviour {
         //spawnPointer.transform.position = pos;
         _navControl.isSpawnMovable = true;
         _navControl.spawnPoint = spawnPointer.transform;
+        StartCoroutine(_buildingManager.SpawnAllBuildings());
 
     }
 
@@ -82,6 +88,18 @@ public class GameManager : MonoBehaviour {
         }
 		
 	}
+
+    //IEnumerator PlayIntro()
+    //{
+    //    GameObject[] animations = GameObject.FindGameObjectsWithTag("IntroAnimation");
+    //    yield return new WaitForSeconds(1f);
+    //    animations[0].GetComponent<Animator>().SetTrigger("spawn");
+    //    yield return new WaitForSeconds(3f);
+    //    animations[1].GetComponent<Animator>().SetTrigger("spawn");
+    //    yield return new WaitForSeconds(3f);
+    //    StartCoroutine(_buildingManager.SpawnAllBuildings());
+
+    //}
 
     
 }

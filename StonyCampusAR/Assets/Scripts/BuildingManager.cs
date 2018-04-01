@@ -41,18 +41,13 @@ public class BuildingManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         Init();
-        
+        //StartCoroutine(SpawnAllBuildings());
     }
 
     private void OnEnable()
     {
         EventManager.StartListening("BuildingSelected", BuildingSelected);
         EventManager.StartListening("OpenBuildingInfo", OpenBuildingInfo);
-    }
-
-    private void OnDisable()
-    {
-
     }
 
     void BuildingSelected(GameObject buildingObject)
@@ -80,7 +75,12 @@ public class BuildingManager : MonoBehaviour {
 
         foreach (GameObject i in buildingGameObjects)
         {
+            i.transform.GetChild(0).transform.localScale = Vector3.zero;
+
             Building building = i.AddComponent<Building>();
+            Animator animator = i.transform.GetChild(0).gameObject.AddComponent<Animator>();
+            animator.runtimeAnimatorController = Resources.Load("Animations/spawnBuildingOverride") as RuntimeAnimatorController;
+            building.animator = animator;
             buildingsDict.Add(building.name, building);
         }
 
@@ -202,5 +202,15 @@ public class BuildingManager : MonoBehaviour {
             }
         }
         return nearest;
+    }
+
+    public IEnumerator SpawnAllBuildings()
+    {
+        yield return new WaitForSeconds(2f);
+        foreach(GameObject i in buildingGameObjects)
+        {
+            i.GetComponent<Building>().SpawnAnimation();
+            yield return new WaitForSeconds(0.3f);
+        }
     }
 }
