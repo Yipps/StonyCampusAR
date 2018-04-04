@@ -13,8 +13,16 @@ public class GameManager : MonoBehaviour {
     NavigationControl _navControl;
     Gps _gps;
 
-    bool hasPlayedIntro;
+    public bool skipIntro;
     public GamePhase gamePhase;
+
+    public bool isFirstTargetFound;
+    public bool isTouchHoldTutDone;
+    public bool isTouchTutDone;
+    public bool isSwipeTutDone;
+
+    private bool hasPlayedIntro;
+    private bool hasSpawnedCampus;
 
     private void Awake()
     {
@@ -37,17 +45,12 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
         Init();
-
-        StartCoroutine(StartIntro());
-        
-
     }
 
-    private IEnumerator StartIntro()
+    //Triggered by vuforia tracking found
+    public IEnumerator StartIntro()
     {
         //Welcome Animation
-
-        gamePhase = GamePhase.Initalizing;
         GameObject[] animations = GameObject.FindGameObjectsWithTag("IntroAnimation");
         yield return new WaitForSeconds(1f);
         animations[0].GetComponent<Animator>().SetTrigger("spawn");
@@ -60,46 +63,65 @@ public class GameManager : MonoBehaviour {
 
     private void Init()
     {
+        gamePhase = GamePhase.Initalizing;
         _buildingManager = BuildingManager.instance;
         _crowdSystem = CrowdSystem.instance;
         _navControl = NavigationControl.instance;
         _gps = GetComponent<Gps>();
+
+        if (skipIntro)
+        {
+            gamePhase = GamePhase.Planning;
+            hasPlayedIntro = true;
+            isTouchHoldTutDone = true;
+        }
     }
 	
-    private void InitSpawnSelection()
+    //TODO If location is found check if location is on campus
+    private void InitSpawnSelection(bool isValid)
     {
-        gamePhase = GamePhase.Planning;
-        Vector3 pos = _gps.PingMap();
-        Debug.Log(pos);
-        GameObject spawnPointer = GameObject.Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject,transform.GetChild(0));
-        spawnPointer.transform.localPosition = pos;
-        //spawnPointer.transform.position = pos;
-        _navControl.isSpawnMovable = true;
-        _navControl.spawnPoint = spawnPointer.transform;
-        StartCoroutine(_buildingManager.SpawnAllBuildings());
+        if (isValid)
+        {
+            GameObject spawnPointer = GameObject.Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject, transform.GetChild(0));
+            Vector3 pos = _gps.PingMap();
+            //TEST
+            pos = _gps.PingMapTest(-73.124995f, 40.915595f);
+            //TEST
+            spawnPointer.transform.localPosition = pos;
+            _navControl.isSpawnMovable = true;
+            _navControl.spawnPoint = spawnPointer.transform;
 
+            GameObject closestBuilding = BuildingManager.FindNearestBuilding(spawnPointer.transform.position);
+            closestBuilding.GetComponent<Building>().SpawnAnimation();
+            GameObject.Instantiate(Resources.Load("Prefabs/Tutorial/TouchAndHold"), GameObject.Find("Canvas").transform);
+        }
+        else
+        {
+
+        }
+
+        gamePhase = GamePhase.Planning;
+    }
+
+    public void ProcessLocationStatus()
+    {
+        if (_gps.gpsStatus == GpsStatus.Succeed)
+        {
+            InitSpawnSelection(true);
+        }
+        if (_gps.gpsStatus == GpsStatus.Disabled || _gps.gpsStatus == GpsStatus.Failed)
+        {
+            InitSpawnSelection(false);
+        }
     }
 
 	// Update is called once per frame
 	void Update () {
-        if (gamePhase == GamePhase.Planning && hasPlayedIntro && _navControl.spawnPoint == null)
-        {
-            InitSpawnSelection();
-        }
+
+        if (gamePhase == GamePhase.Initalizing && hasPlayedIntro)
+            ProcessLocationStatus();
+        if (isTouchHoldTutDone && !hasSpawnedCampus)
+            StartCoroutine(_buildingManager.SpawnAllBuildings());
 		
 	}
-
-    //IEnumerator PlayIntro()
-    //{
-    //    GameObject[] animations = GameObject.FindGameObjectsWithTag("IntroAnimation");
-    //    yield return new WaitForSeconds(1f);
-    //    animations[0].GetComponent<Animator>().SetTrigger("spawn");
-    //    yield return new WaitForSeconds(3f);
-    //    animations[1].GetComponent<Animator>().SetTrigger("spawn");
-    //    yield return new WaitForSeconds(3f);
-    //    StartCoroutine(_buildingManager.SpawnAllBuildings());
-
-    //}
-
-    
 }

@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GpsStatus { Started, Disabled, Pending, Failed, Succeed };
+public 
+    enum GpsStatus { Started, Disabled, Pending, Failed, Succeed };
 
 public class Gps : MonoBehaviour {
     public float latitude = 40.915629f;
@@ -78,7 +79,6 @@ public class Gps : MonoBehaviour {
         {
             gpsStatus = GpsStatus.Failed;
             Debug.Log("Unable to determine device location");
-            GameManager.instance.gamePhase = GamePhase.Planning;
             yield break;
         }
         // Access granted and location value could be retrieved
@@ -87,7 +87,6 @@ public class Gps : MonoBehaviour {
             gpsStatus = GpsStatus.Succeed;
             latitude = Input.location.lastData.latitude;
             longitude = Input.location.lastData.longitude;
-            GameManager.instance.gamePhase = GamePhase.Planning;
         }
     }
 
@@ -109,5 +108,17 @@ public class Gps : MonoBehaviour {
             Debug.Log("Coordinates unavailable");
             return Vector3.zero;
         }
+    }
+
+    public Vector3 PingMapTest(float lon, float lat)
+    {
+        float normLat = 2 * (lat - latMin) / (latMax - latMin) - 1;
+        float normLong = 2 * (lon - longMin) / (longMax - longMin) - 1;
+
+        float x = normLong * xMax;
+        float z = normLat * yMax;
+
+        Vector3 pos = new Vector3(x, 7, z);
+        return pos;
     }
 }

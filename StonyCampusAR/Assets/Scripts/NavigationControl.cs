@@ -10,7 +10,7 @@ public class NavigationControl : MonoBehaviour
     public static NavigationControl instance = null;
     public List<Vector3> waypoints;
     public List<int> waypoint_buildingIndexes;
-    public bool isSpawnMovable = true;
+    public bool isSpawnMovable;
     public Transform spawnPoint = null;
     private LineRenderer renderedPath;
     private float touchHoldTimer = 0;
@@ -114,50 +114,37 @@ public class NavigationControl : MonoBehaviour
     {
         if (Input.touchCount > 0 && !IsPointerOverUIObject())
         {
+            Touch touch = Input.GetTouch(0);
+
             if (isSpawnMovable)
             {
-                Touch touch = Input.GetTouch(0); // get first touch since touch count is greater than zero
-
                 if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
                 {
                     spawnPoint.Translate(touch.deltaPosition.x * 0.1f, 0, touch.deltaPosition.y * 0.1f, Space.World);
                 }
-
-                if (touch.phase == TouchPhase.Ended)
-                {
-                    //GameObject closestBuilding = BuildingManager.FindNearestBuilding(spawnPoint.position);
-                    //closestBuilding.GetComponent<Building>().Selected();
-                    Collider[] buildings = Physics.OverlapSphere(spawnPoint.position, 5f);
-                    foreach(Collider i in buildings)
-                    {
-                        Debug.Log(i.gameObject.name);
-                    }
-                }
             }
-            else
+            
+            touchHoldTimer += Input.GetTouch(0).deltaTime;
+
+            if (touch.phase == TouchPhase.Began)
             {
-                touch = Input.GetTouch(0);
-                touchHoldTimer += Input.GetTouch(0).deltaTime;
-
-                if (touch.phase == TouchPhase.Began)
-                {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                    Physics.Raycast(ray, out hit);
-                    isHeld = false;
-                }
-                if (touchHoldTimer > 1f)
-                {
-                    touchHoldTimer = 0;
-                    isHeld = true;
-                    ProcessRaycast(hit, true);
-                    touch.phase = TouchPhase.Ended;
-                }
-                else if (touch.phase == TouchPhase.Ended && !isHeld)
-                {
-                    touchHoldTimer = 0;
-                    ProcessRaycast(hit, false);
-                }
+                Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                Physics.Raycast(ray, out hit);
+                isHeld = false;
             }
+            if (touchHoldTimer > 1f)
+            {
+                touchHoldTimer = 0;
+                isHeld = true;
+                ProcessRaycast(hit, true);
+                touch.phase = TouchPhase.Ended;
+            }
+            else if (touch.phase == TouchPhase.Ended && !isHeld)
+            {
+                touchHoldTimer = 0;
+                ProcessRaycast(hit, false);
+            }
+            
         }
     }
 

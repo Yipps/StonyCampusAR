@@ -206,7 +206,6 @@ public class BuildingManager : MonoBehaviour {
 
     public IEnumerator SpawnAllBuildings()
     {
-        yield return new WaitForSeconds(2f);
         foreach(GameObject i in buildingGameObjects)
         {
             i.GetComponent<Building>().SpawnAnimation();

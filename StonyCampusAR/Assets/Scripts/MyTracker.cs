@@ -8,9 +8,12 @@ public class MyTracker : DefaultTrackableEventHandler {
     protected override void OnTrackingFound()
     {
         base.OnTrackingFound();
-        GameObject nearest = FindNearestBuilding();
-        //nearest.GetComponentInChildren<Building>().DisplayDave();
-        Debug.Log(nearest.name);
+        
+        if (!GameManager.instance.isFirstTargetFound)
+        {
+            GameManager.instance.isFirstTargetFound = true;
+            StartCoroutine(GameManager.instance.StartIntro());
+        }
     }
 
     private GameObject FindNearestBuilding()

@@ -25,5 +25,6 @@ public class BuildingInfoGUI : MonoBehaviour {
     public void CloseInfoWindow()
     {
         Destroy(gameObject);
+        GameManager.instance.isTouchHoldTutDone = true;
     }
 }
