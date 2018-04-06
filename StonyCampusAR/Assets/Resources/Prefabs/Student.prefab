@@ -23,9 +23,9 @@ GameObject:
   - component: {fileID: 136908913025057986}
   - component: {fileID: 23307611752758256}
   - component: {fileID: 195001219039041432}
-  - component: {fileID: 114801183102211522}
+  - component: {fileID: 114924746618476270}
   m_Layer: 0
-  m_Name: StudentAI
+  m_Name: Student
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,23 +85,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1886719935615820}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114801183102211522
+--- !u!114 &114924746618476270
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1886719935615820}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dbecc3dc491bfa4994b6a0f23a6c2ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 91fe8ef3c9d4aa54a9e58e6cb6ee83bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  schedule: []
-  hasClass: 
-  agent: {fileID: 0}
-  moving: 0
-  maxSpeed: 0
-  normalSpeed: 0
+  ai: {fileID: 11400000, guid: 7ec189bcad35753479107150f7342388, type: 2}
+  agent: {fileID: 195001219039041432}
+  isOccupied: 0
+  homePosition: {x: 0, y: 0, z: 0}
 --- !u!136 &136908913025057986
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -124,11 +122,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.1
-  m_Speed: 16
+  m_Speed: 8
   m_Acceleration: 2000
   avoidancePriority: 50
   m_AngularSpeed: 720
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

@@ -10,7 +10,7 @@ public class PlayerAI : StudentAI {
         if (moving)
             if (!agent.pathPending && !agent.hasPath)
             {
-                CrowdSystem.instance.EnterClass(gameObject);
+                //CrowdSystem.instance.EnterClass(gameObject);
                 BuildingManager.instance.selectedBuildings[currTarget].Selected();
             }
         UpdateSpeed(cs.secondsLeftInPeriod);

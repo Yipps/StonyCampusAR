@@ -63,7 +63,8 @@ public class BuildingManager : MonoBehaviour {
             selectedBuildings.Remove(building);
         }
 
-        NavigationControl.instance.ComputePath(selectedBuildings);
+
+        NavigationControlPC.instance.ComputePath(selectedBuildings);
     }
 
     void Init()
@@ -202,6 +203,11 @@ public class BuildingManager : MonoBehaviour {
             }
         }
         return nearest;
+    }
+
+    public GameObject GetRandomBuilding()
+    {
+       return buildingGameObjects[Random.Range(0, buildingGameObjects.Length)];
     }
 
     public IEnumerator SpawnAllBuildings()

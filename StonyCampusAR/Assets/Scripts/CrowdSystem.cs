@@ -11,6 +11,7 @@ public class CrowdSystem : MonoBehaviour {
     public Transform[] spawnLocations;
     public Transform playerSpawn;
     public GameObject player;
+    public CurrentDay currDay;
 
     public int studentCount;
     public int numDestinations;
@@ -65,6 +66,8 @@ public class CrowdSystem : MonoBehaviour {
         studentsInClass = new List<GameObject>();
         secondsPerPeriod = secondsInDay / maxNumPeriods;
         secondsLeftInPeriod = secondsPerPeriod;
+        currDay.maxPeriods = maxNumPeriods;
+        currDay.currentPeriod = 0;
         //StartDay();
     }
 
@@ -76,7 +79,7 @@ public class CrowdSystem : MonoBehaviour {
             currentSeconds += Time.deltaTime;
             secondsLeftInPeriod -= Time.deltaTime;
 
-            if (secondsLeftInPeriod < 0.40 * secondsPerPeriod)
+            if (secondsLeftInPeriod < 0.40 * secondsPerPeriod || maxNumPeriods == currentPeriod)
                 isSpawning = false;
 
             //Check if its next period
@@ -87,6 +90,7 @@ public class CrowdSystem : MonoBehaviour {
                 secondsLeftInPeriod = secondsPerPeriod;
                 isSpawning = true;
                 EndClasses();
+                currDay.currentPeriod = currentPeriod;
             }
 
             if (!isInSpawningCoroutine && isSpawning)
@@ -111,27 +115,16 @@ public class CrowdSystem : MonoBehaviour {
 
         //Instantiate student prefab
         Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
-        GameObject _student = Instantiate(student, randSpawn.position, Quaternion.identity,transform);
-        StudentAI _studentAI = _student.GetComponent<StudentAI>();
-        _studentAI.agent.Warp(randSpawn.position);
-
-        //Assign agent destinations
-        InitSchedule(_student);
-
-        // Start moving
-        _studentAI.Init();
+        GameObject _student = Instantiate(student, transform);
+        _student.GetComponent<NavMeshAgent>().Warp(randSpawn.position);
+        _student.GetComponent<StudentAIController>().enabled = true;
+        _student.GetComponent<StudentAIController>().homePosition = randSpawn.position;
 
         //Stop making students
         currStudentCount++;
         isInSpawningCoroutine = false;
     }
 	
-    public void EnterClass(GameObject student)
-    {
-        studentsInClass.Add(student);
-        student.SetActive(false);
-    }
-
     public void EndClasses()
     {
         foreach(GameObject i in studentsInClass)

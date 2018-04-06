@@ -35,7 +35,7 @@ public class StudentAI : MonoBehaviour {
     void Update() {
         if (moving)
             if (!agent.pathPending && !agent.hasPath)
-                CrowdSystem.instance.EnterClass(gameObject);
+                //CrowdSystem.instance.EnterClass(gameObject);
         UpdateSpeed(cs.secondsLeftInPeriod);
 
     }
