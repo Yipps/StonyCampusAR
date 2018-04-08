@@ -5,10 +5,13 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 
 public class StudentAIController : MonoBehaviour {
+    
     public CoreAI ai;
     public NavMeshAgent agent;
-    public bool isOccupied;
-    public Vector3 homePosition;
+
+    [HideInInspector] public Vector3 homePosition;
+    [HideInInspector] public bool isOccupied;
+    [HideInInspector] public int periodOccupied;
 
     private void OnEnable()
     {
@@ -18,11 +21,12 @@ public class StudentAIController : MonoBehaviour {
 
     void Update () {
         ai.Think(this);
-        //remainDist = agent.remainingDistance;
 	}
 
     private void OnDrawGizmosSelected()
     {
+        if (agent)
         Gizmos.DrawWireSphere(agent.destination, 4f);
     }
+
 }

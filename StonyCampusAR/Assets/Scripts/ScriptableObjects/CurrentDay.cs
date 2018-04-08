@@ -5,6 +5,6 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "CrowdSimulation/CurrentDay")]
 public class CurrentDay : ScriptableObject {
-    public float maxPeriods;
-    public float currentPeriod;
+    public int maxPeriods;
+    public int currentPeriod;
 }

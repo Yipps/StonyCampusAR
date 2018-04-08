@@ -14,8 +14,8 @@ public class Building:MonoBehaviour
     private List<GameObject> icons;
     private float spacing = 3;
     private MeshRenderer renderer;
+    private SelectedBuildingsList selectedBuildingsList;
 
-    [NonSerialized]
     public Animator animator;
 
     private void Awake()
@@ -23,8 +23,8 @@ public class Building:MonoBehaviour
         isSelected = false;
         renderer = this.GetComponentInChildren<MeshRenderer>();
         facilities = new List<Facility>();
-        //icons = new Dictionary<string, GameObject>();
         icons = new List<GameObject>();
+        selectedBuildingsList = Resources.Load("Runtime Data/SelectedBuildingsList") as SelectedBuildingsList;
     }
 
     public bool Selected()
@@ -33,10 +33,12 @@ public class Building:MonoBehaviour
         if (isSelected)
         {
             renderer.material.color = Color.green;
+            selectedBuildingsList.AddBuilding(this);
         }
         else
         {
             renderer.material.color = Color.white;
+            selectedBuildingsList.RemoveBuilding(this);
         }
         return isSelected;
     }
@@ -95,6 +97,11 @@ public class Building:MonoBehaviour
     public void SpawnAnimation()
     {
         animator.SetTrigger("spawn");
+    }
+
+    private void OnDisable()
+    {
+        selectedBuildingsList.RemoveBuilding(this);
     }
 }
 

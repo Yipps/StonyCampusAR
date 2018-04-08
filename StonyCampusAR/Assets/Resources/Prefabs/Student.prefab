@@ -96,10 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fe8ef3c9d4aa54a9e58e6cb6ee83bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ai: {fileID: 11400000, guid: 7ec189bcad35753479107150f7342388, type: 2}
+  ai: {fileID: 11400000, guid: 1d485278ec62b904d8556c201f4583a9, type: 2}
   agent: {fileID: 195001219039041432}
-  isOccupied: 0
   homePosition: {x: 0, y: 0, z: 0}
+  isOccupied: 0
+  periodOccupied: 0
 --- !u!136 &136908913025057986
 CapsuleCollider:
   m_ObjectHideFlags: 1

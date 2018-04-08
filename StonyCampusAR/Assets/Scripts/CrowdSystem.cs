@@ -114,12 +114,18 @@ public class CrowdSystem : MonoBehaviour {
         yield return new WaitForSeconds(spawnDelayInSeconds);
 
         //Instantiate student prefab
-        Transform randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)];
-        GameObject _student = Instantiate(student, transform);
-        _student.GetComponent<NavMeshAgent>().Warp(randSpawn.position);
-        _student.GetComponent<StudentAIController>().enabled = true;
-        _student.GetComponent<StudentAIController>().homePosition = randSpawn.position;
+        Vector3 randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)].position;
+        Vector3 homeSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)].position;
+        //NavMeshHit hit;
 
+        GameObject _student = Instantiate(student, transform);
+        _student.GetComponent<NavMeshAgent>().Warp(randSpawn);
+       
+        //NavMesh.SamplePosition(homeSpawn,out hit,1f,NavMesh.AllAreas);
+        _student.GetComponent<StudentAIController>().homePosition = homeSpawn;
+
+
+        _student.GetComponent<StudentAIController>().enabled = true;
         //Stop making students
         currStudentCount++;
         isInSpawningCoroutine = false;
@@ -147,7 +153,7 @@ public class CrowdSystem : MonoBehaviour {
         StudentAI playerAI = player.GetComponent<StudentAI>();
         Destroy(playerAI);
 
-        playerAI = player.AddComponent<PlayerAI>();
+       // playerAI = player.AddComponent<PlayerAI>();
 
         List<Vector3> schedule = new List<Vector3>();
         foreach (Building i in bm.selectedBuildings)

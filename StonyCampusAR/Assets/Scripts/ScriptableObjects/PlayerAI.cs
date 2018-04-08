@@ -5,14 +5,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-[CreateAssetMenu(menuName = "CrowdSimulation/PluggableAI/GoingToClass")]
-public class GoingToClassAI : CoreAI {
+[CreateAssetMenu(menuName = "CrowdSimulation/PluggableAI/Player")]
+public class PlayerAI : CoreAI
+{
 
+    public SelectedBuildingsList selectedBuildings;
     public CurrentDay currentDay;
 
     public override void Init(StudentAIController ai)
     {
-        GoToNextTarget(ai);
+        GoToNextClass(ai);
     }
 
     public override void Think(StudentAIController ai)
@@ -26,15 +28,10 @@ public class GoingToClassAI : CoreAI {
                 {
                     if (!ai.agent.hasPath || ai.agent.velocity.sqrMagnitude == 0f)
                     {
-                        if(currentDay.currentPeriod == currentDay.maxPeriods)
-                        {
+                        if (currentDay.currentPeriod == currentDay.maxPeriods)
                             Destroy(ai.gameObject);
-                        }
                         else
-                        {
                             EnterClass(ai);
-                        }
-                        
                     }
                 }
             }
@@ -44,26 +41,24 @@ public class GoingToClassAI : CoreAI {
             if (ai.periodOccupied != currentDay.currentPeriod)
             {
                 ExitClass(ai);
-                GoToNextTarget(ai);
             }
         }
     }
 
     private void EnterClass(StudentAIController ai)
     {
-        ai.periodOccupied = currentDay.currentPeriod;
         ai.isOccupied = true;
         ai.agent.enabled = false;
         ai.GetComponent<Renderer>().enabled = false;
+        ai.periodOccupied = currentDay.currentPeriod;
     }
 
-    private void GoToNextTarget(StudentAIController ai)
+    private void GoToNextClass(StudentAIController ai)
     {
-        //If its the end of the day, leave campus
         if (currentDay.currentPeriod == currentDay.maxPeriods)
             ai.agent.destination = ai.homePosition;
         else
-            ai.agent.destination = BuildingManager.instance.GetRandomBuilding().GetComponent<Building>().GetNavPos();
+            ai.agent.SetDestination(selectedBuildings.list[currentDay.currentPeriod].GetNavPos());
     }
 
     public void ExitClass(StudentAIController ai)
@@ -71,7 +66,7 @@ public class GoingToClassAI : CoreAI {
         ai.isOccupied = false;
         ai.agent.enabled = true;
         ai.GetComponent<Renderer>().enabled = true;
+        GoToNextClass(ai);
     }
-
 }
 
