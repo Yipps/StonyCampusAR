@@ -7,12 +7,12 @@ public abstract class RunTimeList<T> : ScriptableObject
 
     public List<T> list = new List<T>();
 
-    public void AddBuilding(T t)
+    public void AddItem(T t)
     {
         if (!list.Contains(t)) list.Add(t);
     }
 
-    public void RemoveBuilding(T t)
+    public void RemoveItem(T t)
     {
         if (list.Contains(t)) list.Remove(t);
     }

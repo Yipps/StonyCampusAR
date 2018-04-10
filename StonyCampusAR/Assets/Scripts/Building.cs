@@ -33,12 +33,12 @@ public class Building:MonoBehaviour
         if (isSelected)
         {
             renderer.material.color = Color.green;
-            selectedBuildingsList.AddBuilding(this);
+            selectedBuildingsList.AddItem(this);
         }
         else
         {
             renderer.material.color = Color.white;
-            selectedBuildingsList.RemoveBuilding(this);
+            selectedBuildingsList.RemoveItem(this);
         }
         return isSelected;
     }
@@ -101,7 +101,7 @@ public class Building:MonoBehaviour
 
     private void OnDisable()
     {
-        selectedBuildingsList.RemoveBuilding(this);
+        selectedBuildingsList.RemoveItem(this);
     }
 }
 

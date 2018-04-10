@@ -22,18 +22,12 @@ public class PlayerAI : CoreAI
         //If ai isn't occupied check if it has reached its destination
         if (!ai.isOccupied)
         {
-            if (!ai.agent.pathPending)
+            if (HasReachedDestination(ai))
             {
-                if (ai.agent.remainingDistance <= ai.agent.stoppingDistance)
-                {
-                    if (!ai.agent.hasPath || ai.agent.velocity.sqrMagnitude == 0f)
-                    {
-                        if (currentDay.currentPeriod == currentDay.maxPeriods)
-                            Destroy(ai.gameObject);
-                        else
-                            EnterClass(ai);
-                    }
-                }
+                if (currentDay.currentPeriod == currentDay.maxPeriods)
+                    Destroy(ai.gameObject);
+                else
+                    EnterClass(ai);
             }
         }
         else
