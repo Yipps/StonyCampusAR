@@ -5,4 +5,5 @@ using UnityEngine;
 public abstract class EventCoreAI : CoreAI
 {
     public CampusEvent campusEvent;
+    public CurrentDay currentDay;
 }

@@ -12,6 +12,7 @@ public class CampusEvent : ScriptableObject
     public string description;
     public int numOfPeriods;
     public int startPeriod;
+    public int maxNumOfStudents;
     public Transform[] eventPositions;
 
     public void OnEnable()

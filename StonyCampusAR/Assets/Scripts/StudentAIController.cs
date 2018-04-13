@@ -12,6 +12,7 @@ public class StudentAIController : MonoBehaviour {
     [HideInInspector] public Vector3 homePosition;
     [HideInInspector] public bool isOccupied;
     [HideInInspector] public int periodOccupied;
+    [HideInInspector] public int currentIndex;
 
     private void OnEnable()
     {
@@ -22,6 +23,17 @@ public class StudentAIController : MonoBehaviour {
     void Update () {
         ai.Think(this);
 	}
+
+    public void ToggleOccupied(float i)
+    {
+        StartCoroutine(ToggleOccupiedCoroutine(i));
+    }
+
+    private IEnumerator ToggleOccupiedCoroutine(float i)
+    {
+        yield return new WaitForSeconds(i);
+        isOccupied = !isOccupied;
+    }
 
     private void OnDrawGizmosSelected()
     {

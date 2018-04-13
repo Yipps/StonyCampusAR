@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "CampusEvents/EventsList")]
+[CreateAssetMenu(menuName = "RuntimeLists/EventsList")]
 public class CampusEventsList : RunTimeList<CampusEvent> {
 
 }
