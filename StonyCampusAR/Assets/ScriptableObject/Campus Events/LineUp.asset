@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d93b75fae79db74ca15daf8d6cf481a, type: 3}
+  m_Name: LineUp
+  m_EditorClassIdentifier: 
+  ai: {fileID: 11400000, guid: 66a786db4a51b344781ceac44872e83d, type: 2}
+  campusEventList: {fileID: 11400000, guid: aafabf2e1c8a12242a4926da610b3553, type: 2}
+  eventName: LineUp
+  description: 
+  numOfPeriods: 2
+  startPeriod: 0
+  maxNumOfStudents: 6
+  currentNumOfStudents: 0
+  eventPositions: []

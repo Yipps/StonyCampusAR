@@ -9,16 +9,12 @@ public class CampusEventsController : MonoBehaviour
     public CurrentDay currentDay;
     public SpawnLocationList spawnLocations;
     public GameObject student;
-    public Transform[] targetLocations;
 
-    private int studentCounter;
 
     private void Start()
     {
-        campusEvent.eventPositions = targetLocations;
+        InitTargetPositions();
         campusEvent.startPeriod = currentDay.currentPeriod;
-
-        InvokeRepeating("SpawnEventStudents", 0f, 1f);
     }
 
     private void SpawnEventStudents()
@@ -36,20 +32,43 @@ public class CampusEventsController : MonoBehaviour
             
         EventCoreAI ai = (EventCoreAI)_student.GetComponent<StudentAIController>().ai;
 
-
         _student.GetComponent<NavMeshAgent>().Warp(randSpawn);
         _student.GetComponent<StudentAIController>().homePosition = homeSpawn;
         ai.campusEvent = campusEvent;
         _student.GetComponent<StudentAIController>().enabled = true;
-
-        studentCounter++;
-        if (studentCounter == campusEvent.maxNumOfStudents)
-            CancelInvoke();
+        
     }
 
     private void OnDisable()
     {
         campusEvent.eventPositions = null;
+    }
+
+    private void Update()
+    {
+        if (campusEvent.currentNumOfStudents < campusEvent.maxNumOfStudents)
+        {
+            campusEvent.currentNumOfStudents++;
+            Invoke("SpawnEventStudents", 0.5f);
+        }
+    }
+
+    private void InitTargetPositions()
+    {
+        List<Transform> positions = new List<Transform>();
+
+        foreach(Transform i in transform)
+        {
+            positions.Add(i);
+        }
+
+        campusEvent.eventPositions = positions.ToArray();
+    }
+
+    private void OnDrawGizmos()
+    {
+        foreach (Transform i in transform)
+            Gizmos.DrawWireCube(i.position, new Vector3(2f,2f,2f));
     }
 
 }

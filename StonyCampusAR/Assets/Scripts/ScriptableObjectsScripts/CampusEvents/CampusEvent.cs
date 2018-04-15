@@ -13,6 +13,7 @@ public class CampusEvent : ScriptableObject
     public int numOfPeriods;
     public int startPeriod;
     public int maxNumOfStudents;
+     public int currentNumOfStudents;
     public Transform[] eventPositions;
 
     public void OnEnable()
@@ -23,6 +24,7 @@ public class CampusEvent : ScriptableObject
     public void OnDisable()
     {
         campusEventList.RemoveItem(this);
+        currentNumOfStudents = 0;
     }
 }
 

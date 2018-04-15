@@ -101,6 +101,7 @@ MonoBehaviour:
   homePosition: {x: 0, y: 0, z: 0}
   isOccupied: 0
   periodOccupied: 0
+  currentIndex: 0
 --- !u!136 &136908913025057986
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -122,12 +123,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 1886719935615820}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.3
+  m_Radius: 0.5
   m_Speed: 8
   m_Acceleration: 2000
   avoidancePriority: 50
   m_AngularSpeed: 720
-  m_StoppingDistance: 3
+  m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

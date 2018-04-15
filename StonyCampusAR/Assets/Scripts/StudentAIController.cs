@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,10 +10,12 @@ public class StudentAIController : MonoBehaviour {
     public CoreAI ai;
     public NavMeshAgent agent;
 
-    [HideInInspector] public Vector3 homePosition;
-    [HideInInspector] public bool isOccupied;
-    [HideInInspector] public int periodOccupied;
-    [HideInInspector] public int currentIndex;
+    public Vector3 homePosition;
+    public bool isOccupied;
+    public int periodOccupied;
+    public int currentIndex;
+
+    private bool isTogglingOccupied;
 
     private void OnEnable()
     {
@@ -31,14 +34,20 @@ public class StudentAIController : MonoBehaviour {
 
     private IEnumerator ToggleOccupiedCoroutine(float i)
     {
-        yield return new WaitForSeconds(i);
-        isOccupied = !isOccupied;
+        if (!isTogglingOccupied)
+        {
+            isTogglingOccupied = true;
+            yield return new WaitForSeconds(i);
+            isOccupied = !isOccupied;
+            isTogglingOccupied = false;
+        }
+
     }
 
     private void OnDrawGizmosSelected()
     {
         if (agent)
-        Gizmos.DrawWireSphere(agent.destination, 4f);
+        Gizmos.DrawWireSphere(agent.destination, 2f);
     }
 
 }
