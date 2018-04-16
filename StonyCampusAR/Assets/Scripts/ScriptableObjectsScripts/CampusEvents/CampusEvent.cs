@@ -11,10 +11,13 @@ public class CampusEvent : ScriptableObject
     public string eventName;
     public string description;
     public int numOfPeriods;
-    public int startPeriod;
     public int maxNumOfStudents;
-     public int currentNumOfStudents;
-    public Transform[] eventPositions;
+
+    public float agentSpeed;
+
+    [HideInInspector] public int startPeriod;
+    [HideInInspector] public int currentNumOfStudents;
+    [HideInInspector] public Transform[] eventPositions;
 
     public void OnEnable()
     {

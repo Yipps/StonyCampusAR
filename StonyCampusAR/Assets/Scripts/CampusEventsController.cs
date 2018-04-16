@@ -21,20 +21,20 @@ public class CampusEventsController : MonoBehaviour
     {
         Vector3 randSpawn = spawnLocations.list[Random.Range(0, spawnLocations.list.Count)].position;
         Vector3 homeSpawn = spawnLocations.list[Random.Range(0, spawnLocations.list.Count)].position;
+
         GameObject _student = Instantiate(student, transform);
-        _student.GetComponent<StudentAIController>().ai = campusEvent.ai;
 
-        //EventCoreAI ai;
-        //if (_student.GetComponent<StudentAIController>().ai is EventCoreAI)
-        //{
-        //    ai = (EventCoreAI)_student.GetComponent<StudentAIController>().ai;
-        //}
-            
-        EventCoreAI ai = (EventCoreAI)_student.GetComponent<StudentAIController>().ai;
-
-        _student.GetComponent<NavMeshAgent>().Warp(randSpawn);
-        _student.GetComponent<StudentAIController>().homePosition = homeSpawn;
+        //Setup StudentAIController
+        EventCoreAI ai = campusEvent.ai;
+        _student.GetComponent<StudentAIController>().ai = ai;
         ai.campusEvent = campusEvent;
+
+        if (campusEvent.agentSpeed != 0)
+            _student.GetComponent<NavMeshAgent>().speed = campusEvent.agentSpeed;
+
+        _student.GetComponent<StudentAIController>().homePosition = homeSpawn;
+        
+        _student.GetComponent<NavMeshAgent>().Warp(randSpawn);
         _student.GetComponent<StudentAIController>().enabled = true;
         
     }

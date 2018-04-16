@@ -1,27 +1,31 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewGameEvent", menuName = "CustomSO/Events/GameEvent")]
+[CreateAssetMenu]
 public class GameEvent : ScriptableObject
 {
-    private List<GameEventListener> listeners = new List<GameEventListener>();
+    /// <summary>
+    /// The list of listeners that this event will notify if it is raised.
+    /// </summary>
+    private readonly List<GameEventListener> eventListeners =
+        new List<GameEventListener>();
 
-    public void RegisterListerner(GameEventListener listener)
+    public void Raise()
     {
-        listeners.Add(listener);
+        for (int i = eventListeners.Count - 1; i >= 0; i--)
+            eventListeners[i].OnEventRaised();
+    }
+
+    public void RegisterListener(GameEventListener listener)
+    {
+        if (!eventListeners.Contains(listener))
+            eventListeners.Add(listener);
     }
 
     public void UnregisterListener(GameEventListener listener)
     {
-        listeners.Remove(listener);
-    }
-
-    public void Raise()
-    {
-        for (int i = listeners.Count - 1; i >= 0; --i)
-        {
-            listeners[i].RaiseEvent();
-        }
+        if (eventListeners.Contains(listener))
+            eventListeners.Remove(listener);
     }
 }

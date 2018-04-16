@@ -1,27 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 using UnityEngine.Events;
 
 
 public class GameEventListener : MonoBehaviour
 {
-    // The game event instance to register to.
-    public GameEvent GameEvent;
-    // The unity event responce created for the event.
+    [Tooltip("Event to register with.")]
+    public GameEvent Event;
+
+    [Tooltip("Response to invoke when Event is raised.")]
     public UnityEvent Response;
 
-    public void OnEnabled()
+    private void OnEnable()
     {
-        GameEvent.RegisterListerner(this);
+        Event.RegisterListener(this);
     }
 
-    public void OnDisabled()
+    private void OnDisable()
     {
-        GameEvent.UnregisterListener(this);
+        Event.UnregisterListener(this);
     }
 
-    public void RaiseEvent()
+    public void OnEventRaised()
     {
         Response.Invoke();
     }

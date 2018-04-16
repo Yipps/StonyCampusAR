@@ -83,32 +83,32 @@ public class NavigationControl : MonoBehaviour
     {
         ListenToClicks();
 
-        if (CrowdSystem.instance.isDayStarted)
-            RedrawPath();
+        //if (CrowdSystem.instance.isDayStarted)
+        //    RedrawPath();
     }
 
-    private void RedrawPath()
-    {
-        StudentAI playerAI = CrowdSystem.instance.GetPlayerAI();
+    //private void RedrawPath()
+    //{
+    //    StudentAI playerAI = CrowdSystem.instance.GetPlayerAI();
 
-        if (playerAI.agent.pathPending)
-            return;
+    //    if (playerAI.agent.pathPending)
+    //        return;
 
-        NavMeshPath playerPath = CrowdSystem.instance.GetPlayerAgent().path;
+    //    NavMeshPath playerPath = CrowdSystem.instance.GetPlayerAgent().path;
 
-        List<Vector3> updatedPath = new List<Vector3>();
-        updatedPath.AddRange(playerPath.corners);
+    //    List<Vector3> updatedPath = new List<Vector3>();
+    //    updatedPath.AddRange(playerPath.corners);
 
-        int waypointIndex = waypoint_buildingIndexes[playerAI.currTarget];
+    //    int waypointIndex = waypoint_buildingIndexes[playerAI.currTarget];
 
-        updatedPath.AddRange(waypoints.GetRange(waypointIndex, waypoints.Count - waypointIndex));
+    //    updatedPath.AddRange(waypoints.GetRange(waypointIndex, waypoints.Count - waypointIndex));
 
-        renderedPath.positionCount = updatedPath.Count;
-        for (int i = 0; i < updatedPath.Count; i++)
-        {
-            renderedPath.SetPosition(i, updatedPath[i]);
-        }
-    }
+    //    renderedPath.positionCount = updatedPath.Count;
+    //    for (int i = 0; i < updatedPath.Count; i++)
+    //    {
+    //        renderedPath.SetPosition(i, updatedPath[i]);
+    //    }
+    //}
 
     private void ListenToClicks()
     {

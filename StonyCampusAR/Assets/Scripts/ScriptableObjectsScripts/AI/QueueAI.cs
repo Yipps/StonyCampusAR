@@ -25,7 +25,7 @@ public class QueueAI : EventCoreAI
         {
             //If event is over, student is no longer occupied and goes home
             if (IsEventOver(ai))
-                LeaveLine(ai);
+                GoHome(ai);
 
             //If student has reached the front of line, leave in x seconds
             if (HasReachedDestination(ai) && studentAIs.IndexOf(ai) == 0)
@@ -49,7 +49,7 @@ public class QueueAI : EventCoreAI
     private void MoveLineUp(StudentAIController ai)
     {
         studentAIs.RemoveAt(0);
-        LeaveLine(ai);
+        GoHome(ai);
         foreach(StudentAIController i in studentAIs)
         {
             i.agent.destination = campusEvent.eventPositions[studentAIs.IndexOf(i)].position;
@@ -63,7 +63,7 @@ public class QueueAI : EventCoreAI
         return false;
     }
 
-    public void LeaveLine(StudentAIController ai)
+    public void GoHome(StudentAIController ai)
     {
         ai.isOccupied = false;
         ai.agent.destination = ai.homePosition;

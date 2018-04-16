@@ -62,9 +62,6 @@ public class BuildingManager : MonoBehaviour {
         {
             selectedBuildings.Remove(building);
         }
-
-
-        NavigationControlPC.instance.ComputePath(selectedBuildings);
     }
 
     void Init()
