@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 23307611752758256}
   - component: {fileID: 195001219039041432}
   - component: {fileID: 114924746618476270}
+  - component: {fileID: 114452873687399544}
   m_Layer: 0
   m_Name: Student
   m_TagString: Untagged
@@ -85,6 +86,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1886719935615820}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114452873687399544
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1886719935615820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df44d53f66cd8a44aa20db90dcef2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  studentList: {fileID: 11400000, guid: be205040583da0b4e83db57472a37771, type: 2}
 --- !u!114 &114924746618476270
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -96,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91fe8ef3c9d4aa54a9e58e6cb6ee83bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ai: {fileID: 11400000, guid: 1d485278ec62b904d8556c201f4583a9, type: 2}
+  ai: {fileID: 11400000, guid: e6b9ee1d3683c854fb6c3a152f53af43, type: 2}
   agent: {fileID: 195001219039041432}
   homePosition: {x: 0, y: 0, z: 0}
   isOccupied: 0

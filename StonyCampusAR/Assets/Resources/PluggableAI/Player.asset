@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fdfe6b2fdd686c4dbf378efa9f97af7, type: 3}
-  m_Name: OpenFairAI
+  m_Script: {fileID: 11500000, guid: b9601aac80de9fc4a90648b056dfe2d7, type: 3}
+  m_Name: Player
   m_EditorClassIdentifier: 
-  campusEvent: {fileID: 11400000, guid: 13365d783976dc045bc5d2526158ac47, type: 2}
+  selectedBuildings: {fileID: 11400000, guid: 6bbd3d02e61a75d42b40553355161f87, type: 2}
   currentDay: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}

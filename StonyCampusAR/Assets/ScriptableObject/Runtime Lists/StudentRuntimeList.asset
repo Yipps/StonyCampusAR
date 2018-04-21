@@ -8,8 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fede64bf82468e47a8dfb7a6af645da, type: 3}
-  m_Name: CurrentDay
+  m_Script: {fileID: 11500000, guid: 14cdb904913e9fb48b3a413c13912c0e, type: 3}
+  m_Name: StudentRuntimeList
   m_EditorClassIdentifier: 
-  maxPeriods: 2
-  currentPeriod: 2
+  list: []

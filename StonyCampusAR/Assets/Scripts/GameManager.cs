@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
     BuildingManager _buildingManager;
-    CrowdSystem _crowdSystem;
     NavigationControl _navControl;
     Gps _gps;
 
@@ -65,7 +64,6 @@ public class GameManager : MonoBehaviour {
     {
         gamePhase = GamePhase.Initalizing;
         _buildingManager = BuildingManager.instance;
-        _crowdSystem = CrowdSystem.instance;
         _navControl = NavigationControl.instance;
         _gps = GetComponent<Gps>();
 

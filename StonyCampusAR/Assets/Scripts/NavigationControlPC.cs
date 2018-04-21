@@ -8,9 +8,6 @@ public class NavigationControlPC : MonoBehaviour
 {
     public GameEvent buildingSelected;
     public static NavigationControlPC instance = null;
-    public List<Vector3> waypoints;
-    public List<int> waypoint_buildingIndexes;
-    public bool isSpawnMovable;
 
     void Awake()
     {
@@ -18,21 +15,12 @@ public class NavigationControlPC : MonoBehaviour
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
-        Init();
-    }
-
-
-    void Init()
-    {
-        waypoints = new List<Vector3>();
-        waypoint_buildingIndexes = new List<int>();
     }
 
     private void Update()
     {
         ListenToClicks();
     }
-
     
     private void ListenToClicks()
     {
@@ -56,7 +44,6 @@ public class NavigationControlPC : MonoBehaviour
         {
             EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
             buildingSelected.Raise();
-            Debug.Log("Event is raised");
         }
     }
 

@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fdfe6b2fdd686c4dbf378efa9f97af7, type: 3}
+  m_Name: OpenFair
+  m_EditorClassIdentifier: 
+  campusEvent: {fileID: 11400000, guid: 13365d783976dc045bc5d2526158ac47, type: 2}
+  currentDay: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}

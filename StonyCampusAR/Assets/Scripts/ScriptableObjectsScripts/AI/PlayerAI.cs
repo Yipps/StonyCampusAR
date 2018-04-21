@@ -8,21 +8,27 @@ using UnityEngine.Events;
 [CreateAssetMenu(menuName = "CrowdSimulation/PluggableAI/Player")]
 public class PlayerAI : CoreAI
 {
-
     public SelectedBuildingsList selectedBuildings;
     public CurrentDay currentDay;
 
     public override void Init(StudentAIController ai)
     {
+        ai.isOccupied = true;
         GoToNextClass(ai);
     }
 
     public override void Think(StudentAIController ai)
     {
         //If ai isn't occupied check if it has reached its destination
-        if (!ai.isOccupied)
+        if (ai.isOccupied)
         {
-            if (HasReachedDestination(ai))
+
+            if (ai.periodOccupied != currentDay.currentPeriod)
+            {
+                ExitClass(ai);
+            }
+
+            if (ai.agent.enabled == true && HasReachedDestination(ai))
             {
                 if (currentDay.currentPeriod == currentDay.maxPeriods)
                     Destroy(ai.gameObject);
@@ -32,16 +38,13 @@ public class PlayerAI : CoreAI
         }
         else
         {
-            if (ai.periodOccupied != currentDay.currentPeriod)
-            {
-                ExitClass(ai);
-            }
+            if (ai.agent.enabled == true &&HasReachedDestination(ai))
+                Destroy(ai.gameObject);
         }
     }
 
     private void EnterClass(StudentAIController ai)
-    {
-        ai.isOccupied = true;
+    { 
         ai.agent.enabled = false;
         ai.GetComponent<Renderer>().enabled = false;
         ai.periodOccupied = currentDay.currentPeriod;
@@ -49,15 +52,17 @@ public class PlayerAI : CoreAI
 
     private void GoToNextClass(StudentAIController ai)
     {
-        if (currentDay.currentPeriod == currentDay.maxPeriods)
+        if (currentDay.currentPeriod == currentDay.maxPeriods || currentDay.currentPeriod + 1 > selectedBuildings.list.Count)
+        {
             ai.agent.destination = ai.homePosition;
+            ai.isOccupied = false;
+        }
         else
             ai.agent.SetDestination(selectedBuildings.list[currentDay.currentPeriod].GetNavPos());
     }
 
     public void ExitClass(StudentAIController ai)
     {
-        ai.isOccupied = false;
         ai.agent.enabled = true;
         ai.GetComponent<Renderer>().enabled = true;
         GoToNextClass(ai);

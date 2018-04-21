@@ -6,34 +6,51 @@ using UnityEngine.AI;
 public class DrawSchedulePath : MonoBehaviour {
 
     public SelectedBuildingsList selectedBuildings;
-    //private NavMeshAgent agent;
-    public LineRenderer renderedPath;
-    public List<Vector3> waypoints;
-    public List<int> waypoint_buildingIndexes;
+    public CurrentDay currentday;
+    public NavMeshAgent agent;
+    [HideInInspector] public bool isPlayerActive;
+    private LineRenderer renderedPath;
 
+    private List<Vector3> lineRenderPositions;
+    private List<int> indexiesOfBuildings;
+    
     private void Start()
     {
-        //agent = this.GetComponent<NavMeshAgent>();
         selectedBuildings = Resources.Load("Runtime Data/SelectedBuildingsList") as SelectedBuildingsList;
         renderedPath = GetComponent<LineRenderer>();
-        waypoints = new List<Vector3>();
-        waypoint_buildingIndexes = new List<int>();
+        lineRenderPositions = new List<Vector3>();
+        indexiesOfBuildings = new List<int>();
+    }
+
+    private void Update()
+    {
+        if (currentday.currentPeriod == currentday.maxPeriods || currentday.currentPeriod + 1 > selectedBuildings.list.Count)
+            isPlayerActive = false;
+
+        if(isPlayerActive)
+            RedrawPath();
     }
 
     public void ComputePath()
     {
-        Debug.Log("Computer Path");
+        //If only one building is selected no path rendering is needed
         if (selectedBuildings.list.Count < 1)
         {
             renderedPath.positionCount = 0;
         }
         else
-        {
+        {   
+            //Used to calculate renderline positions with navmesh
             NavMeshPath navPath = new NavMeshPath();
-            waypoints.Clear();
-            waypoint_buildingIndexes.Clear();
-            waypoint_buildingIndexes.Add(0);
 
+            //Reset the position and indexies list to be recalculated
+            lineRenderPositions.Clear();
+            indexiesOfBuildings.Clear();
+
+            //First building is at index 0
+            indexiesOfBuildings.Add(0);
+
+            //Generate path between every 2 consecutive buildings and add it the list of render positions
             for (int i = 0; i < selectedBuildings.list.Count - 1; i++)
             {
                 Vector3 currentBuildingPos = selectedBuildings.list[i].transform.position;
@@ -45,39 +62,47 @@ public class DrawSchedulePath : MonoBehaviour {
                 NavMesh.SamplePosition(nextBuildingPos, out nextSample, 10f, NavMesh.AllAreas);
 
                 NavMesh.CalculatePath(currentSample.position, nextSample.position, NavMesh.AllAreas, navPath);
-                waypoints.AddRange(navPath.corners);
+                lineRenderPositions.AddRange(navPath.corners);
 
-                waypoint_buildingIndexes.Add(waypoints.Count - 1);
+                indexiesOfBuildings.Add(lineRenderPositions.Count - 1);
 
             }
-            renderedPath.positionCount = waypoints.Count;
-            for (int i = 0; i < waypoints.Count; i++)
+
+            //Set the list of render positions to the linerenderer to be shown
+            renderedPath.positionCount = lineRenderPositions.Count;
+            for (int i = 0; i < lineRenderPositions.Count; i++)
             {
-                renderedPath.SetPosition(i, waypoints[i]);
+                renderedPath.SetPosition(i, lineRenderPositions[i]);
             }
         }
     }
 
-    //private void RedrawPath()
-    //{
+    private void RedrawPath()
+    {
+        if (agent == null)
+        {
+            Debug.Log("Agent not found for drawing path");
+            isPlayerActive = false;
+            return;
+        }else if (agent.pathPending)
+        {
+            return;
+        }
 
-    //    if (agent.pathPending)
-    //        return;
+        NavMeshPath playerPath = agent.path;
 
-    //    NavMeshPath playerPath = agent.path;
+        List<Vector3> updatedPath = new List<Vector3>();
+        updatedPath.AddRange(playerPath.corners);
 
-    //    List<Vector3> updatedPath = new List<Vector3>();
-    //    updatedPath.AddRange(playerPath.corners);
+        int waypointIndex = indexiesOfBuildings[currentday.currentPeriod];
 
-    //    //int waypointIndex = waypoint_buildingIndexes[playerAI.currTarget];
-    //    int waypointIndex = 0;
+        updatedPath.AddRange(lineRenderPositions.GetRange(waypointIndex, lineRenderPositions.Count - waypointIndex));
 
-    //    updatedPath.AddRange(waypoints.GetRange(waypointIndex, waypoints.Count - waypointIndex));
+        renderedPath.positionCount = updatedPath.Count;
+        for (int i = 0; i < updatedPath.Count; i++)
+        {
+            renderedPath.SetPosition(i, updatedPath[i]);
+        }
+    }
 
-    //    renderedPath.positionCount = updatedPath.Count;
-    //    for (int i = 0; i < updatedPath.Count; i++)
-    //    {
-    //        renderedPath.SetPosition(i, updatedPath[i]);
-    //    }
-    //}
 }

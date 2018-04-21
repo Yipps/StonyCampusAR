@@ -6,66 +6,40 @@ using UnityEngine.AI;
 
 public class CrowdSystem : MonoBehaviour
 {
-    public static CrowdSystem instance = null;
-
     public GameObject student;
-    public Transform[] spawnLocations;
+    public SpawnLocationList spawnLocations;
     public Transform playerSpawn;
     public CurrentDay currDay;
-
+    public StudentRuntimeList studentList;
 
     public int studentCount;
     public float secondsInDay;
     public int maxNumPeriods;
     public float spawnDelayInSeconds;
 
-    public int currentPeriod;
     public bool isDayStarted;
 
-    [HideInInspector]
-    public float currentSeconds;
-    public float secondsLeftInPeriod;
-    public float secondsPerPeriod;
+    [HideInInspector] public float currentSeconds;
+    [HideInInspector] public float secondsLeftInPeriod;
+    [HideInInspector] public float secondsPerPeriod;
 
     private bool isInSpawningCoroutine;
 
     private int currStudentCount;
 
-    private CoreAI goToClass;
-    private CoreAI wanderer;
-    private CoreAI player;
+    private CoreAI goToClassAI;
+    private CoreAI wanderAI;
+    private CoreAI playerAI;
 
     BuildingManager bm;
     private bool isSpawning;
 
-    private void Awake()
-    {
-
-        //Check if instance already exists
-        if (instance == null)
-
-            //if not, set instance to this
-            instance = this;
-
-        //If instance already exists and it's not this:
-        else if (instance != this)
-
-            //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
-            Destroy(gameObject);
-
-        //Sets this to not be destroyed when reloading scene
-        DontDestroyOnLoad(gameObject);
-    }
-
     void Start()
     {
-        currStudentCount = 0;
         bm = BuildingManager.instance;
-        secondsPerPeriod = secondsInDay / maxNumPeriods;
-        secondsLeftInPeriod = secondsPerPeriod;
-        currDay.maxPeriods = maxNumPeriods;
-        currDay.currentPeriod = 0;
-        //StartDay();
+        wanderAI = Resources.Load("PluggableAI/Wander") as WanderingAI;
+        playerAI = Resources.Load("PluggableAI/Player") as PlayerAI;
+        goToClassAI = Resources.Load("PluggableAI/GoingToClass") as GoingToClassAI;
     }
 
     private void Update()
@@ -76,41 +50,43 @@ public class CrowdSystem : MonoBehaviour
             currentSeconds += Time.deltaTime;
             secondsLeftInPeriod -= Time.deltaTime;
 
-            if (secondsLeftInPeriod < 0.40 * secondsPerPeriod || maxNumPeriods == currentPeriod)
+            if (secondsLeftInPeriod < 0.40 * secondsPerPeriod || currDay.currentPeriod == currDay.maxPeriods)
                 isSpawning = false;
 
             //Check if its next period
-            if (currentPeriod != Mathf.FloorToInt(currentSeconds / secondsPerPeriod))
+            if (currDay.currentPeriod != Mathf.FloorToInt(currentSeconds / secondsPerPeriod))
             {
-                //next period
-                currentPeriod++;
-                secondsLeftInPeriod = secondsPerPeriod;
-                isSpawning = true;
-                currDay.currentPeriod = currentPeriod;
-            }
-
-            if (!isInSpawningCoroutine && isSpawning)
-            {
-                //StartCoroutine(SpawnStudent());
+                currDay.currentPeriod = currDay.currentPeriod + 1;
+                if (currDay.currentPeriod == currDay.maxPeriods)
+                    EndDay();
+                else
+                    StartNextPeriod();
+                
             }
         }
     }
 
+    public void StartNextPeriod()
+    {
+        secondsLeftInPeriod = secondsPerPeriod;
+        isSpawning = true;
+    }
+
     public void StartDay()
     {
+        InitDay();
         isDayStarted = true;
         isSpawning = true;
-        //StartCoroutine(SpawnStudent())
+        SpawnPlayer(playerAI);
     }
 
     public IEnumerator SpawnStudent(CoreAI ai)
     {
         isInSpawningCoroutine = true;
-        yield return new WaitForSeconds(spawnDelayInSeconds);
-
+        
         //Instantiate student prefab
-        Vector3 randSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)].position;
-        Vector3 homeSpawn = spawnLocations[Random.Range(0, spawnLocations.Length)].position;
+        Vector3 randSpawn = spawnLocations.list[Random.Range(0, spawnLocations.list.Count)].position;
+        Vector3 homeSpawn = spawnLocations.list[Random.Range(0, spawnLocations.list.Count)].position;
 
         GameObject _student = Instantiate(student, transform);
 
@@ -119,9 +95,23 @@ public class CrowdSystem : MonoBehaviour
         _student.GetComponent<StudentAIController>().ai = ai;
 
         _student.GetComponent<StudentAIController>().enabled = true;
-        //Stop making students
-        currStudentCount++;
+
+        yield return new WaitForSeconds(spawnDelayInSeconds);
         isInSpawningCoroutine = false;
+    }
+
+    public void SpawnPlayer(CoreAI ai)
+    {
+        GameObject player = Instantiate(student, transform);
+        StudentAIController playerAIControl = player.GetComponent<StudentAIController>();
+        playerAIControl.ai = ai;
+        playerAIControl.homePosition = spawnLocations.list[Random.Range(0, spawnLocations.list.Count)].position;
+
+        DrawSchedulePath pathDrawer = transform.parent.GetComponentInChildren<DrawSchedulePath>();
+        pathDrawer.agent = player.GetComponent<NavMeshAgent>();
+        pathDrawer.isPlayerActive = true;
+
+        playerAIControl.enabled = true;
     }
 
     private void OnGUI()
@@ -130,8 +120,30 @@ public class CrowdSystem : MonoBehaviour
         GUI.Label(new Rect(0, Screen.height - 100, 400, 100), "Day Start = " + isDayStarted.ToString());
         GUI.Label(new Rect(0, Screen.height - 80, 400, 100), "Is Spawning: " + isSpawning.ToString());
         GUI.Label(new Rect(0, Screen.height - 60, 400, 100), "#Students: " + currStudentCount);
-        GUI.Label(new Rect(0, Screen.height - 40, 400, 100), "Current Period: " + currentPeriod);
+        GUI.Label(new Rect(0, Screen.height - 40, 400, 100), "Current Period: " + currDay.currentPeriod);
         GUI.Label(new Rect(0, Screen.height - 20, 400, 100), "Time until next Period: " + secondsLeftInPeriod);
     }
 
+    private void EndDay()
+    {
+        isSpawning = false;
+        isDayStarted = false;
+
+        //Destory all active students and clear list
+        foreach (GameObject i in studentList.list)
+        {
+            Destroy(i);
+        }
+        studentList.list.Clear();
+    }
+
+    private void InitDay()
+    {
+        currStudentCount = 0;
+        secondsPerPeriod = secondsInDay / maxNumPeriods;
+        secondsLeftInPeriod = secondsPerPeriod;
+        currDay.maxPeriods = maxNumPeriods;
+        currDay.currentPeriod = 0;
+        currentSeconds = 0;
+    }
 }
