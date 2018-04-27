@@ -6,16 +6,11 @@ using UnityEngine.EventSystems;
 
 public class NavigationControl : MonoBehaviour
 {
-
+    public GameEvent buildingSelected;
     public static NavigationControl instance = null;
-    public List<Vector3> waypoints;
-    public List<int> waypoint_buildingIndexes;
-    public bool isSpawnMovable;
-    public Transform spawnPoint = null;
-    private LineRenderer renderedPath;
+    public bool isBuildingsSelectable { set; get; }
     private float touchHoldTimer = 0;
     private RaycastHit hit;
-    private Touch touch;
     private bool isHeld;
     
 
@@ -28,109 +23,32 @@ public class NavigationControl : MonoBehaviour
         Init();
     }
 
-    public void ComputePath(List<Building> selectedBuildings)
-    {
-        if (selectedBuildings.Count < 1)
-        {
-            renderedPath.positionCount = 0;
-        }
-        else
-        {
-            NavMeshPath navPath = new NavMeshPath();
-            waypoints.Clear();
-            waypoint_buildingIndexes.Clear();
-            waypoint_buildingIndexes.Add(0);
-
-            for (int i = 0; i < selectedBuildings.Count - 1; i++)
-            {
-                Vector3 currentBuildingPos = selectedBuildings[i].transform.position;
-                Vector3 nextBuildingPos = selectedBuildings[i + 1].transform.position;
-
-                NavMeshHit currentSample;
-                NavMeshHit nextSample;
-                NavMesh.SamplePosition(currentBuildingPos, out currentSample, 10f, NavMesh.AllAreas);
-                NavMesh.SamplePosition(nextBuildingPos, out nextSample, 10f, NavMesh.AllAreas);
-
-                NavMesh.CalculatePath(currentSample.position, nextSample.position, NavMesh.AllAreas, navPath);
-                waypoints.AddRange(navPath.corners);
-
-                waypoint_buildingIndexes.Add(waypoints.Count - 1);
-
-            }
-            renderedPath.positionCount = waypoints.Count;
-            for (int i = 0; i < waypoints.Count; i++)
-            {
-                renderedPath.SetPosition(i, waypoints[i]);
-            }
-        }
-    }
-
     void Init()
     {
-        waypoints = new List<Vector3>();
-        waypoint_buildingIndexes = new List<int>();
-        renderedPath = this.GetComponent<LineRenderer>();
-        hit = new RaycastHit();
-        if (renderedPath == null)
-        {
-            renderedPath = this.gameObject.AddComponent<LineRenderer>();
-            renderedPath.material = new Material(Shader.Find("Sprites/Default")) { color = Color.yellow };
-            renderedPath.positionCount = 0;
-        }
+
     }
 
     private void Update()
     {
         ListenToClicks();
-
-        //if (CrowdSystem.instance.isDayStarted)
-        //    RedrawPath();
     }
 
-    //private void RedrawPath()
-    //{
-    //    StudentAI playerAI = CrowdSystem.instance.GetPlayerAI();
-
-    //    if (playerAI.agent.pathPending)
-    //        return;
-
-    //    NavMeshPath playerPath = CrowdSystem.instance.GetPlayerAgent().path;
-
-    //    List<Vector3> updatedPath = new List<Vector3>();
-    //    updatedPath.AddRange(playerPath.corners);
-
-    //    int waypointIndex = waypoint_buildingIndexes[playerAI.currTarget];
-
-    //    updatedPath.AddRange(waypoints.GetRange(waypointIndex, waypoints.Count - waypointIndex));
-
-    //    renderedPath.positionCount = updatedPath.Count;
-    //    for (int i = 0; i < updatedPath.Count; i++)
-    //    {
-    //        renderedPath.SetPosition(i, updatedPath[i]);
-    //    }
-    //}
 
     private void ListenToClicks()
     {
-        if (Input.touchCount > 0 && !IsPointerOverUIObject())
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-
-            if (isSpawnMovable)
-            {
-                if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved)
-                {
-                    spawnPoint.Translate(touch.deltaPosition.x * 0.1f, 0, touch.deltaPosition.y * 0.1f, Space.World);
-                }
-            }
             
             touchHoldTimer += Input.GetTouch(0).deltaTime;
 
             if (touch.phase == TouchPhase.Began)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                Physics.Raycast(ray, out hit);
-                isHeld = false;
+                if (Physics.Raycast(ray, out hit))
+                    isHeld = false;
+                else
+                    return;
             }
             if (touchHoldTimer > 1f)
             {
@@ -150,14 +68,26 @@ public class NavigationControl : MonoBehaviour
 
     public void ProcessRaycast(RaycastHit hit, bool isHolding)
     {
+        Debug.Log("Processing Raycast, isHolding :" + isHolding);
 
-        if (hit.transform.parent.tag != "CampusBuildings")
-            return;
+        if (hit.transform.parent.tag == "CampusBuildings")
+        {
+            if (isHolding)
+                EventManager.TriggerEvent("OpenBuildingInfo", hit.transform.gameObject);
+            else if (isBuildingsSelectable)
+            {
+                Debug.Log("Building is selected");
+                EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
+                buildingSelected.Raise();
+            }
+        }
+        
 
-        if (isHolding)
-            EventManager.TriggerEvent("OpenBuildingInfo", hit.transform.gameObject);
-        else
-            EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
+        if (hit.transform.tag == "CampusEventGUI")
+        {
+            hit.transform.parent.GetComponent<CampusEventGUI>().ToggleInfoGUI();
+        }
+        return;
     }
 
     private bool IsPointerOverUIObject()

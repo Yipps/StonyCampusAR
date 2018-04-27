@@ -8,6 +8,7 @@ public class NavigationControlPC : MonoBehaviour
 {
     public GameEvent buildingSelected;
     public static NavigationControlPC instance = null;
+    public bool isBuildingsSelectable;
 
     void Awake()
     {
@@ -27,24 +28,32 @@ public class NavigationControlPC : MonoBehaviour
         RaycastHit hit;
         if (Input.GetMouseButtonDown(0)) { 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(ray, out hit);
-            ProcessRaycast(hit, false);
+            if(Physics.Raycast(ray, out hit))
+                ProcessRaycast(hit, false);
         }
     }
 
     public void ProcessRaycast(RaycastHit hit, bool isHolding)
     {
-
-        if (hit.transform.parent.tag != "CampusBuildings")
-            return;
-
-        if (isHolding)
-            EventManager.TriggerEvent("OpenBuildingInfo", hit.transform.gameObject);
-        else
+        Debug.Log(hit.transform.gameObject.name);
+        if (hit.transform.parent.tag == "CampusBuildings")
         {
-            EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
-            buildingSelected.Raise();
+            if (isHolding)
+                EventManager.TriggerEvent("OpenBuildingInfo", hit.transform.gameObject);
+            else if (isBuildingsSelectable)
+            {
+                Debug.Log("Building is selected");
+                EventManager.TriggerEvent("BuildingSelected", hit.transform.gameObject);
+                buildingSelected.Raise();
+            }
         }
+        
+        if (hit.transform.tag == "CampusEventGUI")
+        {
+            hit.transform.parent.GetComponent<CampusEventGUI>().ToggleInfoGUI();
+        }
+        return;
+       
     }
 
     private bool IsPointerOverUIObject()

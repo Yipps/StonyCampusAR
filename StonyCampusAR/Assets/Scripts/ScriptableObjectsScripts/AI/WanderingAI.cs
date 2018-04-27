@@ -5,9 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "CrowdSimulation/PluggableAI/Wanderer")]
 public class WanderingAI : CoreAI
 {
+    public WanderingStudentsRuntimeList runtimeList;
 
     public override void Init(StudentAIController ai)
     {
+        SetList(ai);
         ai.isOccupied = false;
         GoToHome(ai);
     }
@@ -23,6 +25,7 @@ public class WanderingAI : CoreAI
                 {
                     if (!ai.agent.hasPath || ai.agent.velocity.sqrMagnitude == 0f)
                     {
+                        runtimeList.RemoveItem(ai.gameObject);
                         Destroy(ai.gameObject);
                     }
                 }
@@ -30,8 +33,13 @@ public class WanderingAI : CoreAI
         }
     }
 
-    public void GoToHome(StudentAIController ai)
+    void GoToHome(StudentAIController ai)
     {
         ai.agent.destination = ai.homePosition;
+    }
+
+    void SetList(StudentAIController ai)
+    {
+        runtimeList.AddItem(ai.gameObject);
     }
 }

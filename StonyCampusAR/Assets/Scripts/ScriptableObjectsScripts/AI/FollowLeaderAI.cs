@@ -18,13 +18,24 @@ public class FollowLeaderAI : EventCoreAI {
         if (ai.isOccupied)
             ai.agent.destination = campusEvent.eventPositions[0].position;
         else
-            ai.agent.destination = ai.homePosition;
+        {
+            if (HasReachedDestination(ai))
+            {
+                campusEvent.currentNumOfStudents--;
+                Destroy(ai.gameObject);
+            }
+                
+        }
     }
 
     public void CheckIfEventOver(StudentAIController ai)
     {
-        if (campusEvent.startPeriod + campusEvent.numOfPeriods < currentDay.currentPeriod)
+        if (campusEvent.startPeriod + campusEvent.numOfPeriods == currentDay.currentPeriod || currentDay.currentPeriod == currentDay.maxPeriods)
+        {
             ai.isOccupied = false;
+            ai.agent.destination = ai.homePosition;
+        }
+
     }
 
     IEnumerator FollowLeader(StudentAIController ai)

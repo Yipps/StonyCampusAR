@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
 
     BuildingManager _buildingManager;
-    NavigationControl _navControl;
     Gps _gps;
 
     public bool skipIntro;
     public GamePhase gamePhase;
+    public PlayerData playerData;
 
     public bool isFirstTargetFound;
     public bool isTouchHoldTutDone;
@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour {
     {
         gamePhase = GamePhase.Initalizing;
         _buildingManager = BuildingManager.instance;
-        _navControl = NavigationControl.instance;
         _gps = GetComponent<Gps>();
 
         if (skipIntro)
@@ -80,18 +79,16 @@ public class GameManager : MonoBehaviour {
     {
         if (isValid)
         {
-            GameObject spawnPointer = GameObject.Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject, transform.GetChild(0));
+            GameObject playerPointer = Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject, transform.GetChild(0));
             Vector3 pos = _gps.PingMap();
             //TEST
-            pos = _gps.PingMapTest(-73.124995f, 40.915595f);
+            //pos = _gps.PingMapTest(-73.124995f, 40.915595f);
             //TEST
-            spawnPointer.transform.localPosition = pos;
-            _navControl.isSpawnMovable = true;
-            _navControl.spawnPoint = spawnPointer.transform;
-
-            GameObject closestBuilding = BuildingManager.FindNearestBuilding(spawnPointer.transform.position);
+            playerPointer.transform.localPosition = pos;
+            playerData.playerPointer = playerPointer;
+            GameObject closestBuilding = BuildingManager.FindNearestBuilding(playerPointer.transform.position);
             closestBuilding.GetComponent<Building>().SpawnAnimation();
-            GameObject.Instantiate(Resources.Load("Prefabs/Tutorial/TouchAndHold"), GameObject.Find("Canvas").transform);
+            Instantiate(Resources.Load("Prefabs/Tutorial/TouchAndHold"), GameObject.Find("Canvas").transform);
         }
         else
         {

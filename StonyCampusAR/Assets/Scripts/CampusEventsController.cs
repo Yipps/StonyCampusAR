@@ -10,7 +10,6 @@ public class CampusEventsController : MonoBehaviour
     public SpawnLocationList spawnLocations;
     public GameObject student;
 
-
     private void Start()
     {
         InitTargetPositions();
@@ -46,10 +45,20 @@ public class CampusEventsController : MonoBehaviour
 
     private void Update()
     {
-        if (campusEvent.currentNumOfStudents < campusEvent.maxNumOfStudents)
+        if (IsCampusEventOver())
         {
-            campusEvent.currentNumOfStudents++;
-            Invoke("SpawnEventStudents", 0.5f);
+            //Once all students are gone, destroy event
+            if (campusEvent.currentNumOfStudents == 0)
+                Destroy(gameObject);
+        }
+        else
+        {
+            //Spawn until max num of students reached for event
+            if (campusEvent.currentNumOfStudents < campusEvent.maxNumOfStudents)
+            {
+                campusEvent.currentNumOfStudents++;
+                SpawnEventStudents();
+            }
         }
     }
 
@@ -70,5 +79,14 @@ public class CampusEventsController : MonoBehaviour
         foreach (Transform i in transform)
             Gizmos.DrawWireCube(i.position, new Vector3(2f,2f,2f));
     }
+
+    private bool IsCampusEventOver()
+    {
+       
+        if (campusEvent.startPeriod + campusEvent.numOfPeriods <= currentDay.currentPeriod || currentDay.currentPeriod == currentDay.maxPeriods)
+            return true;
+        return false;
+    }
+
 
 }

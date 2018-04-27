@@ -1,13 +1,12 @@
 fileFormatVersion: 2
-guid: f53622c651ddb194092fd5699c0514e7
-timeCreated: 1524370491
+guid: 7df44d53f66cd8a44aa20db90dcef2d6
+timeCreated: 1524373727
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - campusEvent: {instanceID: 0}
-  - currentDay: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}
+  - studentList: {fileID: 11400000, guid: 63a4b3732f4a22043b18b58a41a6e2dd, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

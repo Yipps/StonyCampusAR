@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6e94da23fdf82b47ab843587beb34ed, type: 3}
-  m_Name: Wander
+  m_Script: {fileID: 11500000, guid: 1761874925c6cc546a1ed703ad495fdc, type: 3}
+  m_Name: WanderingStudentsList
   m_EditorClassIdentifier: 
-  runtimeList: {fileID: 11400000, guid: 09f32894e39ffc640b848464e660522a, type: 2}
+  list: []

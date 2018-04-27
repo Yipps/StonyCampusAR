@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Name: GoingToClass
   m_EditorClassIdentifier: 
   currentDay: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}
+  runtimeList: {fileID: 11400000, guid: 63a4b3732f4a22043b18b58a41a6e2dd, type: 2}

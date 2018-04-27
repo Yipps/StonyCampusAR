@@ -13,4 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   campusEvent: {fileID: 11400000, guid: 3fe7ada10f4fa284188263daf7fb9393, type: 2}
   currentDay: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}
+  isDestoyedOnDequeue: 1
   studentAIs: []

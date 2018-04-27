@@ -3,10 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//TODO: Use ai.gameobject to start a coroutine/Invoke dequeue
 [CreateAssetMenu(menuName = "CrowdSimulation/PluggableAI/CampusEventAI/QueueAI")]
 public class QueueAI : EventCoreAI
 {
+    public bool isDestoyedOnDequeue = true;
     public List<StudentAIController> studentAIs = new List<StudentAIController>();
+    private bool eventOverFlag;
 
     public override void Init(StudentAIController ai)
     {
@@ -29,28 +33,37 @@ public class QueueAI : EventCoreAI
 
             //If student has reached the front of line, leave in x seconds
             if (HasReachedDestination(ai) && studentAIs.IndexOf(ai) == 0)
-                ai.ToggleOccupied(5f);
+                ai.ToggleOccupied(3f);
         }
         else
         {
             //Student leaves and rest of the line moves up
-            if (studentAIs.IndexOf(ai) == 0)
+            if (!IsEventOver(ai) && studentAIs.IndexOf(ai) == 0 )
             {
-                campusEvent.currentNumOfStudents--;
                 MoveLineUp(ai);
             }
 
-            
-            if (HasReachedDestination(ai))
+
+            //TEMP CHANGE
+            if (isDestoyedOnDequeue && !eventOverFlag)
+            {
+                campusEvent.currentNumOfStudents--;
                 Destroy(ai.gameObject);
+            }
+            else if (HasReachedDestination(ai))
+            {
+                campusEvent.currentNumOfStudents--;
+                Destroy(ai.gameObject);
+            }
         }
     }
 
     private void MoveLineUp(StudentAIController ai)
     {
         studentAIs.RemoveAt(0);
+        //campusEvent.currentNumOfStudents--;
         GoHome(ai);
-        foreach(StudentAIController i in studentAIs)
+        foreach (StudentAIController i in studentAIs)
         {
             i.agent.destination = campusEvent.eventPositions[studentAIs.IndexOf(i)].position;
         }
@@ -58,8 +71,11 @@ public class QueueAI : EventCoreAI
 
     public bool IsEventOver(StudentAIController ai)
     {
-        if (campusEvent.startPeriod + campusEvent.numOfPeriods < currentDay.currentPeriod)
+        if (campusEvent.startPeriod + campusEvent.numOfPeriods == currentDay.currentPeriod || currentDay.currentPeriod == currentDay.maxPeriods)
+        {
+            eventOverFlag = true;
             return true;
+        }
         return false;
     }
 

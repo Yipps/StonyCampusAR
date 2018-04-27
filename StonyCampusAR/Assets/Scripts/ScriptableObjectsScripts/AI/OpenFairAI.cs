@@ -26,7 +26,10 @@ public class OpenFairAI : EventCoreAI
         else
         {
             if (HasReachedDestination(ai))
+            {
+                campusEvent.currentNumOfStudents--;
                 Destroy(ai.gameObject);
+            }
         }
     }
 
@@ -37,7 +40,7 @@ public class OpenFairAI : EventCoreAI
 
     public bool IsEventOver(StudentAIController ai)
     {
-        if (campusEvent.startPeriod + campusEvent.numOfPeriods < currentDay.currentPeriod)
+        if (campusEvent.startPeriod + campusEvent.numOfPeriods == currentDay.currentPeriod || currentDay.currentPeriod == currentDay.maxPeriods)
             return true;
         return false;
     }

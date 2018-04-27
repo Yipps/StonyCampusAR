@@ -9,9 +9,11 @@ using UnityEngine.Events;
 public class GoingToClassAI : CoreAI {
 
     public CurrentDay currentDay;
+    public GoingToClassStudentsRuntimeList runtimeList;
 
     public override void Init(StudentAIController ai)
     {
+        SetList(ai);
         GoToNextTarget(ai);
     }
 
@@ -28,6 +30,7 @@ public class GoingToClassAI : CoreAI {
                     {
                         if(currentDay.currentPeriod == currentDay.maxPeriods)
                         {
+                            runtimeList.RemoveItem(ai.gameObject);
                             Destroy(ai.gameObject);
                         }
                         else
@@ -73,5 +76,9 @@ public class GoingToClassAI : CoreAI {
         ai.GetComponent<Renderer>().enabled = true;
     }
 
+    void SetList(StudentAIController ai)
+    {
+        runtimeList.AddItem(ai.gameObject);
+    }
 }
 

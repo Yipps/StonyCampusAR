@@ -7,7 +7,8 @@ public class DrawSchedulePath : MonoBehaviour {
 
     public SelectedBuildingsList selectedBuildings;
     public CurrentDay currentday;
-    public NavMeshAgent agent;
+    public PlayerData playerData;
+    public GameObject positionPointer;
     [HideInInspector] public bool isPlayerActive;
     private LineRenderer renderedPath;
 
@@ -79,17 +80,17 @@ public class DrawSchedulePath : MonoBehaviour {
 
     private void RedrawPath()
     {
-        if (agent == null)
+        if (playerData.playerAgent == null)
         {
             Debug.Log("Agent not found for drawing path");
             isPlayerActive = false;
             return;
-        }else if (agent.pathPending)
+        }else if (playerData.playerAgent.pathPending)
         {
             return;
         }
 
-        NavMeshPath playerPath = agent.path;
+        NavMeshPath playerPath = playerData.playerAgent.path;
 
         List<Vector3> updatedPath = new List<Vector3>();
         updatedPath.AddRange(playerPath.corners);

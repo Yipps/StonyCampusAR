@@ -1,11 +1,14 @@
 fileFormatVersion: 2
 guid: b9601aac80de9fc4a90648b056dfe2d7
-timeCreated: 1523120700
+timeCreated: 1524370478
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - selectedBuildings: {fileID: 11400000, guid: 6bbd3d02e61a75d42b40553355161f87,
+      type: 2}
+  - currentDay: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
