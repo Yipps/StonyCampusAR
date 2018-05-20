@@ -8,6 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8de2bc7249a0ae4c92c5b55a2b7933c, type: 3}
-  m_Name: DayHasEnded
+  m_Script: {fileID: 11500000, guid: 9a6b6f6c8079dc64b9331c251d56858b, type: 3}
+  m_Name: PlayerData
   m_EditorClassIdentifier: 
+  playerPointer: {fileID: 0}
+  playerAgent: {fileID: 0}
+  playerTransform: {fileID: 0}

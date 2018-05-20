@@ -74,6 +74,7 @@ public class QueueAI : EventCoreAI
         if (campusEvent.startPeriod + campusEvent.numOfPeriods == currentDay.currentPeriod || currentDay.currentPeriod == currentDay.maxPeriods)
         {
             eventOverFlag = true;
+            studentAIs.Clear();
             return true;
         }
         return false;
@@ -86,6 +87,11 @@ public class QueueAI : EventCoreAI
     }
 
     public void OnDisable()
+    {
+        studentAIs.Clear();
+    }
+
+    public void OnDestroy()
     {
         studentAIs.Clear();
     }

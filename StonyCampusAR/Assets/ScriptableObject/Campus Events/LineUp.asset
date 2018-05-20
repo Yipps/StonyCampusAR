@@ -13,10 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ai: {fileID: 11400000, guid: 66a786db4a51b344781ceac44872e83d, type: 2}
   campusEventList: {fileID: 11400000, guid: aafabf2e1c8a12242a4926da610b3553, type: 2}
-  eventName: LineUp
-  description: 
   numOfPeriods: 2
-  startPeriod: 0
   maxNumOfStudents: 6
+  agentSpeed: 0
+  startPeriod: 3
   currentNumOfStudents: 0
   eventPositions: []

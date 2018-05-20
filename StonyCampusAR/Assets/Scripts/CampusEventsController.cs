@@ -22,6 +22,7 @@ public class CampusEventsController : MonoBehaviour
         Vector3 homeSpawn = spawnLocations.list[Random.Range(0, spawnLocations.list.Count)].position;
 
         GameObject _student = Instantiate(student, transform);
+        _student.GetComponent<Renderer>().material.color = Color.cyan;
 
         //Setup StudentAIController
         EventCoreAI ai = campusEvent.ai;
@@ -47,6 +48,7 @@ public class CampusEventsController : MonoBehaviour
     {
         if (IsCampusEventOver())
         {
+            GetComponent<CampusEventGUI>().DisableGUI();
             //Once all students are gone, destroy event
             if (campusEvent.currentNumOfStudents == 0)
                 Destroy(gameObject);
@@ -84,7 +86,9 @@ public class CampusEventsController : MonoBehaviour
     {
        
         if (campusEvent.startPeriod + campusEvent.numOfPeriods <= currentDay.currentPeriod || currentDay.currentPeriod == currentDay.maxPeriods)
+        {
             return true;
+        }
         return false;
     }
 

@@ -32,6 +32,7 @@ public class CrowdSystem : MonoBehaviour
     private CoreAI wanderAI;
     private CoreAI playerAI;
     private GameEvent periodEndedEvent;
+    private GameEvent dayHasEndedEvent;
 
     BuildingManager bm;
     private bool isSpawning;
@@ -44,6 +45,7 @@ public class CrowdSystem : MonoBehaviour
         playerAI = Resources.Load("PluggableAI/Player") as PlayerAI;
         goToClassAI = Resources.Load("PluggableAI/GoingToClass") as GoingToClassAI;
         periodEndedEvent = Resources.Load("GameEvents/PeriodEnded") as GameEvent;
+        dayHasEndedEvent = Resources.Load("GameEvents/dayHasEnded") as GameEvent;
     }
 
     private void Update()
@@ -92,15 +94,23 @@ public class CrowdSystem : MonoBehaviour
 
     public void SpawnPlayer(CoreAI ai)
     {
-        GameObject player = Instantiate(student, transform);
+        Vector3 playerSpawnPosition = new Vector3(playerData.playerPointer.transform.position.x, 0.1f, playerData.playerPointer.transform.position.z);
+
+        //Instantiate gameobject
+        GameObject player = Instantiate(student, playerSpawnPosition, Quaternion.identity);
+
+        //Setup line renderer reference
+        DrawSchedulePath pathDrawer = transform.parent.GetComponentInChildren<DrawSchedulePath>();
+        pathDrawer.isPlayerActive = true;
+        //Set scriptable object play data
+        playerData.playerPointer.transform.SetParent(player.transform);
+        playerData.playerAgent = player.GetComponent<NavMeshAgent>();
+        //Initalize AI component of prefab
         StudentAIController playerAIControl = player.GetComponent<StudentAIController>();
         playerAIControl.ai = ai;
         playerAIControl.homePosition = spawnLocations.list[Random.Range(0, spawnLocations.list.Count)].position;
-
-        DrawSchedulePath pathDrawer = transform.parent.GetComponentInChildren<DrawSchedulePath>();
-        playerData.playerAgent = player.GetComponent<NavMeshAgent>();
-        pathDrawer.isPlayerActive = true;
-
+        //Position and enable player
+        player.GetComponent<NavMeshAgent>().Warp(playerSpawnPosition);
         playerAIControl.enabled = true;
     }
 
@@ -117,6 +127,7 @@ public class CrowdSystem : MonoBehaviour
     {
         isSpawning = false;
         isDayStarted = false;
+        dayHasEndedEvent.Raise();
     }
 
     private void InitDay()

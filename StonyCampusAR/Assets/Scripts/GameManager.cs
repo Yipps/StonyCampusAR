@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
 
     private bool hasPlayedIntro;
     private bool hasSpawnedCampus;
+    private GameObject playerPointer;
 
     private void Awake()
     {
@@ -79,13 +80,7 @@ public class GameManager : MonoBehaviour {
     {
         if (isValid)
         {
-            GameObject playerPointer = Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject, transform.GetChild(0));
-            Vector3 pos = _gps.PingMap();
-            //TEST
-            //pos = _gps.PingMapTest(-73.124995f, 40.915595f);
-            //TEST
-            playerPointer.transform.localPosition = pos;
-            playerData.playerPointer = playerPointer;
+            SpawnPointer();
             GameObject closestBuilding = BuildingManager.FindNearestBuilding(playerPointer.transform.position);
             closestBuilding.GetComponent<Building>().SpawnAnimation();
             Instantiate(Resources.Load("Prefabs/Tutorial/TouchAndHold"), GameObject.Find("Canvas").transform);
@@ -119,4 +114,18 @@ public class GameManager : MonoBehaviour {
             StartCoroutine(_buildingManager.SpawnAllBuildings());
 		
 	}
+
+    public void SpawnPointer()
+    {
+        if (playerPointer == null)
+        {
+            playerPointer = Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject, transform.GetChild(0));
+            Vector3 pos = _gps.PingMap();
+            //TEST
+            //pos = _gps.PingMapTest(-73.124995f, 40.915595f);
+            //TEST
+            playerPointer.transform.localPosition = pos;
+            playerData.playerPointer = playerPointer;
+        }
+    }
 }

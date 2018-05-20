@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44271785, g: 0.48501676, b: 0.5347819, a: 1}
+  m_IndirectSpecularColor: {r: 0.4427178, g: 0.48501593, b: 0.53478175, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -814,7 +814,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 297522394}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -640, y: 347.80237, z: 0}
+  m_LocalPosition: {x: -640, y: 265.42972, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 531854019}
@@ -906,7 +906,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 332357980}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 417.49213, y: -283.8683, z: 0}
+  m_LocalPosition: {x: 417.49213, y: -201.49564, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1667939397}
@@ -1032,7 +1032,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 454241962}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -640, y: 347.80237, z: 0}
+  m_LocalPosition: {x: -640, y: 265.42972, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 332357981}
@@ -1938,7 +1938,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 821198862}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 417.49213, y: -283.8683, z: 0}
+  m_LocalPosition: {x: 417.49213, y: -201.49564, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1491062729}
@@ -2205,6 +2205,7 @@ GameObject:
   - component: {fileID: 934806800}
   - component: {fileID: 934806799}
   - component: {fileID: 934806798}
+  - component: {fileID: 934806801}
   m_Layer: 0
   m_Name: DaySystem
   m_TagString: Untagged
@@ -2240,10 +2241,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 934806796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b724f5beed729df489756e22cefbf89f, type: 3}
+  m_Script: {fileID: 11500000, guid: dad1efe97e2b26a4cb32f3517d6c6f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 99a5c2bc5cb3836478665ce856ff97ee, type: 2}
+  Event: {fileID: 11400000, guid: 7d8a7939f7d67e749ac1ab4317e3d3d3, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
@@ -2257,7 +2258,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &934806799
@@ -2288,11 +2289,12 @@ MonoBehaviour:
   spawnLocations: {fileID: 11400000, guid: 81399c52d0f38a742b49586bb11c524a, type: 2}
   playerSpawn: {fileID: 0}
   currDay: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}
+  playerData: {fileID: 11400000, guid: 80276a91943b21d4492507d9c673be8c, type: 2}
   goingToClassList: {fileID: 11400000, guid: 63a4b3732f4a22043b18b58a41a6e2dd, type: 2}
   wanderingStudentList: {fileID: 11400000, guid: 09f32894e39ffc640b848464e660522a,
     type: 2}
-  secondsInDay: 50
-  maxNumPeriods: 5
+  secondsInDay: 40
+  maxNumPeriods: 4
   spawnDelayInSeconds: 0.6
   maxClassStudents: 30
   maxWanderingStudents: 10
@@ -2300,6 +2302,34 @@ MonoBehaviour:
   currentSeconds: 0
   secondsLeftInPeriod: 0
   secondsPerPeriod: 0
+--- !u!114 &934806801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 934806796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dad1efe97e2b26a4cb32f3517d6c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: b5874539613795d47b096d532c3bc052, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 934806799}
+        m_MethodName: LoadAllEvents
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &936142340
 GameObject:
   m_ObjectHideFlags: 0
@@ -2330,6 +2360,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skipIntro: 0
   gamePhase: 0
+  playerData: {fileID: 11400000, guid: 80276a91943b21d4492507d9c673be8c, type: 2}
   isFirstTargetFound: 0
   isTouchHoldTutDone: 0
   isTouchTutDone: 0
@@ -2597,7 +2628,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1004463812}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 458, y: 327.19763, z: 0}
+  m_LocalPosition: {x: 458, y: 409.57028, z: 0}
   m_LocalScale: {x: 1.0000015, y: 1.0000015, z: 1.0000015}
   m_Children:
   - {fileID: 2019019351}
@@ -4029,10 +4060,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1611253860}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b724f5beed729df489756e22cefbf89f, type: 3}
+  m_Script: {fileID: 11500000, guid: dad1efe97e2b26a4cb32f3517d6c6f8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 1f03ffead01ca824898c6a118fff90a4, type: 2}
+  Event: {fileID: 11400000, guid: 135d1eb3a5182674aa933e0431671e20, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
@@ -4062,7 +4093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedBuildings: {fileID: 11400000, guid: 6bbd3d02e61a75d42b40553355161f87, type: 2}
   currentday: {fileID: 11400000, guid: 3d591f168c45cb34cb83d261bf4feaa3, type: 2}
-  agent: {fileID: 0}
+  playerData: {fileID: 11400000, guid: 80276a91943b21d4492507d9c673be8c, type: 2}
   isPlayerActive: 0
 --- !u!1 &1624601052
 GameObject:
@@ -4140,7 +4171,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 23aecdf3b11db274f848f2a410ca5909, type: 2}
+      - m_Target: {fileID: 11400000, guid: be22d9e87de7d0e428eedfdeebf1b05d, type: 2}
         m_MethodName: Raise
         m_Mode: 1
         m_Arguments:
@@ -4414,6 +4445,7 @@ GameObject:
   - component: {fileID: 1671600322}
   - component: {fileID: 1671600323}
   - component: {fileID: 1671600324}
+  - component: {fileID: 1671600325}
   m_Layer: 0
   m_Name: BuildingManager
   m_TagString: Untagged
@@ -4466,7 +4498,7 @@ MonoBehaviour:
   - {fileID: 1250116933}
   - {fileID: 236732681}
   - {fileID: 1234356421}
-  selectedBuildings: []
+  selectedBuildings: {fileID: 11400000, guid: 6bbd3d02e61a75d42b40553355161f87, type: 2}
   facilities: []
   icons:
   - {fileID: 1120295967464796, guid: a5474e2c83032404d9ea70759f6cfae5, type: 2}
@@ -4482,8 +4514,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c2ef071870d0cd4e869b6ec1a54391c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingSelected: {fileID: 11400000, guid: 1f03ffead01ca824898c6a118fff90a4, type: 2}
-  spawnPoint: {fileID: 0}
+  buildingSelected: {fileID: 11400000, guid: 135d1eb3a5182674aa933e0431671e20, type: 2}
+--- !u!114 &1671600325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1671600321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dad1efe97e2b26a4cb32f3517d6c6f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: b5874539613795d47b096d532c3bc052, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1671600323}
+        m_MethodName: ClearSelectedBuildings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1671600324}
+        m_MethodName: set_isBuildingsSelectable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1682632075 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 74ce6b5d59e6e5646802ba1413448081, type: 3}
@@ -4647,8 +4717,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1709900604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 587, y: 319, z: 0}
-  m_LocalScale: {x: 0.9171875, y: 0.9171875, z: 0.9171875}
+  m_LocalPosition: {x: 366.5, y: 152, z: 0}
+  m_LocalScale: {x: 0.5726563, y: 0.5726563, z: 0.5726563}
   m_Children:
   - {fileID: 454241963}
   - {fileID: 297522395}
@@ -4944,7 +5014,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1860290252}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 68.89996, y: -274.7024, z: 0}
+  m_LocalPosition: {x: 68.89996, y: -192.32974, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1859695177}
@@ -5287,6 +5357,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 936142341}
+        m_MethodName: SpawnPointer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 1671600324}
         m_MethodName: set_isBuildingsSelectable
         m_Mode: 6

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[CreateAssetMenu(menuName = "playerData")]
 public class PlayerData : ScriptableObject {
 
     public GameObject playerPointer;

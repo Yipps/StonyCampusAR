@@ -8,7 +8,6 @@ public class DrawSchedulePath : MonoBehaviour {
     public SelectedBuildingsList selectedBuildings;
     public CurrentDay currentday;
     public PlayerData playerData;
-    public GameObject positionPointer;
     [HideInInspector] public bool isPlayerActive;
     private LineRenderer renderedPath;
 
@@ -35,23 +34,29 @@ public class DrawSchedulePath : MonoBehaviour {
     public void ComputePath()
     {
         //If only one building is selected no path rendering is needed
-        if (selectedBuildings.list.Count < 1)
+        
+        //Used to calculate renderline positions with navmesh
+        NavMeshPath navPath = new NavMeshPath();
+
+        //Reset the position and indexies list to be recalculated
+        lineRenderPositions.Clear();
+        indexiesOfBuildings.Clear();
+
+        //First building is at index 0
+        //indexiesOfBuildings.Add(0);
+
+        //Start path from spawn Pointer, calculate the path with navmesh and add list of corners to path list
+        NavMeshHit initSpawnSample;
+        NavMeshHit firstBuildingSample;
+        NavMesh.SamplePosition(playerData.playerPointer.transform.position, out initSpawnSample, 10f, NavMesh.AllAreas);
+        NavMesh.SamplePosition(selectedBuildings.list[0].transform.position, out firstBuildingSample, 10f, NavMesh.AllAreas);
+        NavMesh.CalculatePath(initSpawnSample.position, firstBuildingSample.position, NavMesh.AllAreas, navPath);
+        lineRenderPositions.AddRange(navPath.corners);
+        indexiesOfBuildings.Add(lineRenderPositions.Count - 1);
+
+        //Generate path between every 2 consecutive buildings and add it the list of render positions
+        if (selectedBuildings.list.Count != 0)
         {
-            renderedPath.positionCount = 0;
-        }
-        else
-        {   
-            //Used to calculate renderline positions with navmesh
-            NavMeshPath navPath = new NavMeshPath();
-
-            //Reset the position and indexies list to be recalculated
-            lineRenderPositions.Clear();
-            indexiesOfBuildings.Clear();
-
-            //First building is at index 0
-            indexiesOfBuildings.Add(0);
-
-            //Generate path between every 2 consecutive buildings and add it the list of render positions
             for (int i = 0; i < selectedBuildings.list.Count - 1; i++)
             {
                 Vector3 currentBuildingPos = selectedBuildings.list[i].transform.position;
@@ -66,16 +71,16 @@ public class DrawSchedulePath : MonoBehaviour {
                 lineRenderPositions.AddRange(navPath.corners);
 
                 indexiesOfBuildings.Add(lineRenderPositions.Count - 1);
-
-            }
-
-            //Set the list of render positions to the linerenderer to be shown
-            renderedPath.positionCount = lineRenderPositions.Count;
-            for (int i = 0; i < lineRenderPositions.Count; i++)
-            {
-                renderedPath.SetPosition(i, lineRenderPositions[i]);
             }
         }
+
+        //Set the list of render positions to the linerenderer to be shown
+        renderedPath.positionCount = lineRenderPositions.Count;
+        for (int i = 0; i < lineRenderPositions.Count; i++)
+        {
+            renderedPath.SetPosition(i, lineRenderPositions[i]);
+        }
+        
     }
 
     private void RedrawPath()

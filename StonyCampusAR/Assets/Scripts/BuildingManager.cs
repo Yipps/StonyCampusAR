@@ -12,9 +12,7 @@ public class BuildingManager : MonoBehaviour {
     public GameObject[] buildingGameObjects;
 
     public Dictionary<string, Building> buildingsDict;
-
-    public List<Building> selectedBuildings;
-
+    public SelectedBuildingsList selectedBuildings;
     public Facility[] facilities;
 
     private List<string> departments;
@@ -53,15 +51,7 @@ public class BuildingManager : MonoBehaviour {
     void BuildingSelected(GameObject buildingObject)
     {
         Building building = buildingObject.GetComponentInParent<Building>();
-
-        if (building.Selected())
-        { 
-        selectedBuildings.Add(building);
-        }
-        else
-        {
-            selectedBuildings.Remove(building);
-        }
+        building.Selected();
     }
 
     void Init()
@@ -69,7 +59,7 @@ public class BuildingManager : MonoBehaviour {
         organizations = new List<string>();
         departments = new List<string>();
         buildingsDict = new Dictionary<string, Building>();
-        selectedBuildings = new List<Building>();
+        
 
         foreach (GameObject i in buildingGameObjects)
         {
@@ -213,6 +203,14 @@ public class BuildingManager : MonoBehaviour {
         {
             i.GetComponent<Building>().SpawnAnimation();
             yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    public void ClearSelectedBuildings()
+    {
+        for(int i = selectedBuildings.list.Count - 1; i >= 0; i--)
+        {
+            selectedBuildings.list[i].Selected();
         }
     }
 }

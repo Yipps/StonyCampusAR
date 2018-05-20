@@ -10,7 +10,7 @@ public class CampusEventSystem : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        allEvents = Resources.LoadAll<GameObject>("Prefabs/Campus Events").ToList<GameObject>();
+        LoadAllEvents();
 	}
 	
     public void CheckToSpawnEvent()
@@ -19,7 +19,6 @@ public class CampusEventSystem : MonoBehaviour {
         {
             SpawnEvent();
         }
-            
     }
 
     public void SpawnEvent()
@@ -27,5 +26,10 @@ public class CampusEventSystem : MonoBehaviour {
         GameObject randomEvent = allEvents[Random.Range(0, allEvents.Count)];
         allEvents.Remove(randomEvent);
         Instantiate(randomEvent,transform);
+    }
+
+    public void LoadAllEvents()
+    {
+        allEvents = Resources.LoadAll<GameObject>("Prefabs/Campus Events").ToList<GameObject>();
     }
 }
