@@ -12,13 +12,16 @@ public class GameManager : MonoBehaviour {
     Gps _gps;
 
     public bool skipIntro;
+    public bool isLocationSpoofed;
     public GamePhase gamePhase;
     public PlayerData playerData;
+    
 
-    public bool isFirstTargetFound;
-    public bool isTouchHoldTutDone;
-    public bool isTouchTutDone;
-    public bool isSwipeTutDone;
+    [HideInInspector]public bool isFirstTargetFound;
+    [HideInInspector]public bool isTouchHoldTutDone;
+    [HideInInspector]public bool isTouchTutDone;
+    [HideInInspector]public bool isSwipeTutDone;
+    
 
     private bool hasPlayedIntro;
     private bool hasSpawnedCampus;
@@ -121,9 +124,8 @@ public class GameManager : MonoBehaviour {
         {
             playerPointer = Instantiate(Resources.Load("Prefabs/SpawnPointer") as GameObject, transform.GetChild(0));
             Vector3 pos = _gps.PingMap();
-            //TEST
-            //pos = _gps.PingMapTest(-73.124995f, 40.915595f);
-            //TEST
+            if(isLocationSpoofed)
+                pos = _gps.PingMapTest(-73.124995f, 40.915595f);
             playerPointer.transform.localPosition = pos;
             playerData.playerPointer = playerPointer;
         }

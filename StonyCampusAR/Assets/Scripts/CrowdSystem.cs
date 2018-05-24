@@ -8,23 +8,22 @@ public class CrowdSystem : MonoBehaviour
 {
     public GameObject student;
     public SpawnLocationList spawnLocations;
-    public Transform playerSpawn;
+   
     public CurrentDay currDay;
     public PlayerData playerData;
     public GoingToClassStudentsRuntimeList goingToClassList;
     public WanderingStudentsRuntimeList wanderingStudentList;
-
-    public float secondsInDay;
+    public SelectedBuildingsList selectedBuildings;
+    public float secondsPerPeriod;
     public int maxNumPeriods;
     public float spawnDelayInSeconds;
 
     public int maxClassStudents;
     public int maxWanderingStudents;
-
-    [HideInInspector]public bool isDayStarted;
+    [HideInInspector] public Transform playerSpawn;
+    [HideInInspector] public bool isDayStarted;
     [HideInInspector] public float currentSeconds;
     [HideInInspector] public float secondsLeftInPeriod;
-    [HideInInspector] public float secondsPerPeriod;
 
     private bool isInSpawningCoroutine;
 
@@ -46,6 +45,9 @@ public class CrowdSystem : MonoBehaviour
         goToClassAI = Resources.Load("PluggableAI/GoingToClass") as GoingToClassAI;
         periodEndedEvent = Resources.Load("GameEvents/PeriodEnded") as GameEvent;
         dayHasEndedEvent = Resources.Load("GameEvents/dayHasEnded") as GameEvent;
+
+        //ScriptableObjects don't reset
+        currDay.currentPeriod = 0;
     }
 
     private void Update()
@@ -127,13 +129,15 @@ public class CrowdSystem : MonoBehaviour
     {
         isSpawning = false;
         isDayStarted = false;
+        Debug.Log("DayHasEnded Event Raised");
         dayHasEndedEvent.Raise();
     }
 
     private void InitDay()
     {
         DestroyAllStudents();
-        secondsPerPeriod = secondsInDay / maxNumPeriods;
+        maxNumPeriods = selectedBuildings.list.Count;
+        //secondsPerPeriod = secondsInDay / maxNumPeriods;
         secondsLeftInPeriod = secondsPerPeriod;
         currDay.maxPeriods = maxNumPeriods;
         currDay.currentPeriod = 0;

@@ -30,7 +30,7 @@ public class CampusEventGUI : MonoBehaviour {
     public void DisableGUI()
     {
         icon.SetActive(false);
-        icon.SetActive(true);
+        infoGUI.SetActive(false);
     }
 
 }

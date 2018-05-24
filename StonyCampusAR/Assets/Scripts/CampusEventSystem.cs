@@ -7,6 +7,7 @@ public class CampusEventSystem : MonoBehaviour {
 
     public List<GameObject> allEvents;
     public CurrentDay currentDay;
+    //public SelectedBuildingsList selectedBuildingsList;
 
 	// Use this for initialization
 	void Start () {
